@@ -39,9 +39,9 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Lokasi Jemput</label>
-                            <select class="form-select rounded-3" name="lokasi_jemput" required>
+                            <select class="form-select rounded-3" name="lokasi_jemput_id" required>
                                 @foreach ($lokasi_jemputs as $lokasi)
-                                    <option value="{{ $lokasi->nama_lokasi }}">{{ $lokasi->nama_lokasi }}</option>
+                                    <option value="{{ $lokasi->id }}">{{ $lokasi->nama_lokasi }}</option>
                                 @endforeach
                             </select>
                         </div>

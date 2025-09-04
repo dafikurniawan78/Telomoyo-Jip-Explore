@@ -14,8 +14,9 @@ use App\Http\Controllers\JipController;
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/paket', [BerandaController::class, 'paket'])->name('paket');
 
-Route::get('/pemesanan/{id}', [PemesananController::class, 'create'])->name('pemesanan.create');
+Route::get('/pemesanan/create/{id}', [PemesananController::class, 'create'])->name('pemesanan.create');
 Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
+Route::get('/pemesanan/show/{id}', [PemesananController::class, 'show'])->name('pemesanan.show');
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');

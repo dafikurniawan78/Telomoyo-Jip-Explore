@@ -20,33 +20,43 @@ class PemesananController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'telepon' => 'required|string|max:20',
-            'tanggal_berangkat' => 'required|date',
+            'telepon' => 'required|regex:/^[0-9]{10,15}$/',
+            'tanggal_berangkat' => 'required|date|after_or_equal:today',
             'jumlah_orang' => 'required|integer|min:1',
-            'jumlah_jip' => 'required|integer|min:1',
-            'lokasi_jemput' => 'required|string|max:255',
-            'paket_id' => 'required|exists:paket_wisata,id',
-            'total' => 'required|integer|min:0',
+            'lokasi_jemput_id' => 'required|exists:lokasi_jemputs,id',
+            'paket_id' => 'required|exists:paket_wisatas,id',
+            'jam_berangkat' => 'required|string',
             'bukti_pembayaran' => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // Hitung jumlah jip ulang berdasarkan jumlah orang
+        $jumlah_jip = ceil($request->jumlah_orang / 4);
+
         // Ambil paket untuk hitung total berdasarkan harga asli
         $paket = PaketWisata::findOrFail($request->paket_id);
-        $total = $request->jumlah_jip * $paket->harga;
+        $total = $jumlah_jip * $paket->harga;
 
         // Simpan data pemesanan
-        Pemesanan::create([
+        $pemesanan = Pemesanan::create([
             'nama' => $request->nama,
             'telepon' => $request->telepon,
             'tanggal_berangkat' => $request->tanggal_berangkat,
             'jumlah_orang' => $request->jumlah_orang,
-            'jumlah_jip' => $request->jumlah_jip,
-            'lokasi_jemput' => $request->lokasi_jemput,
+            'jumlah_jip' => $jumlah_jip,
+            'lokasi_jemput_id' => $request->lokasi_jemput_id,
             'paket_id' => $paket->id,
+            'jam_berangkat' => $request->jam_berangkat,
             'total' => $total,
+            'status' => 'pending',
             'bukti_pembayaran' => $request->file('bukti_pembayaran')->store('bukti', 'public'),
         ]);
 
-        return redirect()->route('beranda')->with('success', 'Pemesanan berhasil dilakukan!');
+        return redirect()->route('pemesanan.show', $pemesanan->id)->with('success', 'Pemesanan berhasil! Simpan bukti pemesanan Anda.');
+    }
+
+    public function show($id)
+    {
+        $pemesanan = Pemesanan::with('paketWisata')->findOrFail($id);
+        return view('pages.bukti-pemesanan', compact('pemesanan'));
     }
 }

@@ -14,4 +14,9 @@ class LokasiJemput extends Model
     ];
 
     public $timestamps = true;
+
+    public function pemesanans()
+    {
+        return $this->hasMany(Pemesanan::class, 'lokasi_jemput_id');
+    }
 }
