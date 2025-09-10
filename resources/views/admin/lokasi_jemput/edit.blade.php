@@ -9,7 +9,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('lokasi-jemput.index') }}">Lokasi Jemput</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.lokasi-jemput.index') }}">Lokasi Jemput</a></li>
             <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
     </nav>
@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('lokasi-jemput.update', $lokasi->id) }}" method="POST">
+            <form action="{{ route('admin.lokasi-jemput.update', $lokasi->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -45,7 +45,7 @@
                 <button type="submit" class="btn btn-success">
                     <i class="fas fa-save me-1"></i> Perbarui
                 </button>
-                <a href="{{ route('lokasi-jemput.index') }}" class="btn btn-secondary">Batal</a>
+                <a href="{{ route('admin.lokasi-jemput.index') }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
     </div>

@@ -16,7 +16,7 @@
 
     {{-- Tombol Tambah --}}
     <div class="mb-3">
-        <a href="{{ route('lokasi-jemput.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.lokasi-jemput.create') }}" class="btn btn-primary">
             <i class="fas fa-plus-circle me-1"></i> Tambah Lokasi Jemput
         </a>
     </div>
@@ -38,10 +38,10 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $lokasi->nama_lokasi }}</td>
                             <td>
-                                <a href="{{ route('lokasi-jemput.edit', $lokasi->id) }}" class="btn btn-sm btn-warning me-1">
+                                <a href="{{ route('admin.lokasi-jemput.edit', $lokasi->id) }}" class="btn btn-sm btn-warning me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('lokasi-jemput.destroy', $lokasi->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus lokasi ini?')">
+                                <form action="{{ route('admin.lokasi-jemput.destroy', $lokasi->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus lokasi ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">

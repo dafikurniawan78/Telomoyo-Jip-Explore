@@ -12,7 +12,7 @@ class PemesananController extends Controller
 {
     public function index()
     {
-        $pemesanans = Pemesanan::with(['paketWisata', 'lokasiJemput'])->latest()->get();
+        $pemesanans = Pemesanan::with(['paketWisata', 'lokasiJemput'])->latest()->paginate(10);
         return view('admin.pemesanan.index', compact('pemesanans'));
     }
 

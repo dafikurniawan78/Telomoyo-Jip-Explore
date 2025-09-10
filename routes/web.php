@@ -27,23 +27,23 @@ Route::get('/admin/pemesanan/{id}', [PemesananController::class, 'detail'])->nam
 Route::put('/admin/pemesanan/{id}/status', [PemesananController::class, 'updateStatus'])->name('admin.pemesanan.updateStatus');
 Route::delete('/admin/pemesanan/{id}', [PemesananController::class, 'destroy'])->name('admin.pemesanan.destroy');
 
-Route::get('/admin/paket-wisata', [PaketWisataController::class, 'index'])->name('paket-wisata.index');
-Route::get('/admin/paket-wisata/create', [PaketWisataController::class, 'create'])->name('paket-wisata.create');
-Route::post('/admin/paket-wisata', [PaketWisataController::class, 'store'])->name('paket-wisata.store');
-Route::get('/admin/paket-wisata/{id}/edit', [PaketWisataController::class, 'edit'])->name('paket-wisata.edit');
-Route::put('/admin/paket-wisata/{id}', [PaketWisataController::class, 'update'])->name('paket-wisata.update');
-Route::delete('/admin/paket-wisata/{id}', [PaketWisataController::class, 'destroy'])->name('paket-wisata.destroy');
+Route::get('/admin/paket-wisata', [PaketWisataController::class, 'index'])->name('admin.paket-wisata.index');
+Route::get('/admin/paket-wisata/create', [PaketWisataController::class, 'create'])->name('admin.paket-wisata.create');
+Route::post('/admin/paket-wisata', [PaketWisataController::class, 'store'])->name('admin.paket-wisata.store');
+Route::get('/admin/paket-wisata/{id}/edit', [PaketWisataController::class, 'edit'])->name('admin.paket-wisata.edit');
+Route::put('/admin/paket-wisata/{id}', [PaketWisataController::class, 'update'])->name('admin.paket-wisata.update');
+Route::delete('/admin/paket-wisata/{id}', [PaketWisataController::class, 'destroy'])->name('admin.paket-wisata.destroy');
 
-Route::get('/admin/lokasi-jemput', [LokasiJemputController::class, 'index'])->name('lokasi-jemput.index');
-Route::get('/admin/lokasi-jemput/create', [LokasiJemputController::class, 'create'])->name('lokasi-jemput.create');
-Route::post('/admin/lokasi-jemput', [LokasiJemputController::class, 'store'])->name('lokasi-jemput.store');
-Route::get('/admin/lokasi-jemput/{id}/edit', [LokasiJemputController::class, 'edit'])->name('lokasi-jemput.edit');
-Route::put('/admin/lokasi-jemput/{id}', [LokasiJemputController::class, 'update'])->name('lokasi-jemput.update');
-Route::delete('/admin/lokasi-jemput/{id}', [LokasiJemputController::class, 'destroy'])->name('lokasi-jemput.destroy');
+Route::get('/admin/lokasi-jemput', [LokasiJemputController::class, 'index'])->name('admin.lokasi-jemput.index');
+Route::get('/admin/lokasi-jemput/create', [LokasiJemputController::class, 'create'])->name('admin.lokasi-jemput.create');
+Route::post('/admin/lokasi-jemput', [LokasiJemputController::class, 'store'])->name('admin.lokasi-jemput.store');
+Route::get('/admin/lokasi-jemput/{id}/edit', [LokasiJemputController::class, 'edit'])->name('admin.lokasi-jemput.edit');
+Route::put('/admin/lokasi-jemput/{id}', [LokasiJemputController::class, 'update'])->name('admin.lokasi-jemput.update');
+Route::delete('/admin/lokasi-jemput/{id}', [LokasiJemputController::class, 'destroy'])->name('admin.lokasi-jemput.destroy');
 
-Route::get('/admin/jip', [JipController::class, 'index'])->name('jip.index');
-Route::get('/admin/jip/create', [JipController::class, 'create'])->name('jip.create');
-Route::post('/admin/jip', [JipController::class, 'store'])->name('jip.store');
-Route::get('/admin/jip/{id}/edit', [JipController::class, 'edit'])->name('jip.edit');
-Route::put('/admin/jip/{id}', [JipController::class, 'update'])->name('jip.update');
-Route::delete('/admin/jip/{id}', [JipController::class, 'destroy'])->name('jip.destroy');
+Route::get('/admin/jip', [JipController::class, 'index'])->name('admin.jip.index');
+Route::get('/admin/jip/create', [JipController::class, 'create'])->name('admin.jip.create');
+Route::post('/admin/jip', [JipController::class, 'store'])->name('admin.jip.store');
+Route::get('/admin/jip/{id}/edit', [JipController::class, 'edit'])->name('admin.jip.edit');
+Route::put('/admin/jip/{id}', [JipController::class, 'update'])->name('admin.jip.update');
+Route::delete('/admin/jip/{id}', [JipController::class, 'destroy'])->name('admin.jip.destroy');

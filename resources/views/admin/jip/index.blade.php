@@ -16,7 +16,7 @@
 
     {{-- Tombol Tambah --}}
     <div class="mb-3">
-        <a href="{{ route('jip.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.jip.create') }}" class="btn btn-primary">
             <i class="fas fa-plus-circle me-1"></i> Tambah Jip
         </a>
     </div>
@@ -52,10 +52,10 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('jip.edit', $jip->id) }}" class="btn btn-sm btn-warning me-1">
+                                <a href="{{ route('admin.jip.edit', $jip->id) }}" class="btn btn-sm btn-warning me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('jip.destroy', $jip->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data jip ini?')">
+                                <form action="{{ route('admin.jip.destroy', $jip->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data jip ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">

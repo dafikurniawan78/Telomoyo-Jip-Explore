@@ -10,7 +10,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('paket-wisata.index') }}">Paket Wisata</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.paket-wisata.index') }}">Paket Wisata</a></li>
             <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
     </nav>
@@ -18,7 +18,7 @@
     {{-- Form Edit --}}
     <div class="card shadow-sm">
         <div class="card-body">
-            <form action="{{ route('paket-wisata.update', $paketWisata->id) }}" method="POST">
+            <form action="{{ route('admin.paket-wisata.update', $paketWisata->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -57,7 +57,7 @@
                 <button type="submit" class="btn btn-success">
                     <i class="fas fa-save me-1"></i> Perbarui
                 </button>
-                <a href="{{ route('paket-wisata.index') }}" class="btn btn-secondary">Batal</a>
+                <a href="{{ route('admin.paket-wisata.index') }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
     </div>

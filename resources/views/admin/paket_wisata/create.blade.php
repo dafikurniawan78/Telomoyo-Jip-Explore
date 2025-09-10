@@ -9,7 +9,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('paket-wisata.index') }}">Paket Wisata</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.paket-wisata.index') }}">Paket Wisata</a></li>
             <li class="breadcrumb-item active" aria-current="page">Tambah</li>
         </ol>
     </nav>
@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('paket-wisata.store') }}" method="POST">
+            <form action="{{ route('admin.paket-wisata.store') }}" method="POST">
                 @csrf
 
                 <div class="mb-3">
@@ -67,7 +67,7 @@
                 <button type="submit" class="btn btn-success">
                     <i class="fas fa-save me-1"></i> Simpan
                 </button>
-                <a href="{{ route('paket-wisata.index') }}" class="btn btn-secondary">Batal</a>
+                <a href="{{ route('admin.paket-wisata.index') }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
     </div>

@@ -9,7 +9,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('jip.index') }}">Data Jip</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.jip.index') }}">Data Jip</a></li>
             <li class="breadcrumb-item active" aria-current="page">Tambah</li>
         </ol>
     </nav>
@@ -29,7 +29,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('jip.store') }}" method="POST">
+            <form action="{{ route('admin.jip.store') }}" method="POST">
                 @csrf
 
                 <div class="mb-3">
@@ -81,7 +81,7 @@
                 <button type="submit" class="btn btn-success">
                     <i class="fas fa-save me-1"></i> Simpan
                 </button>
-                <a href="{{ route('jip.index') }}" class="btn btn-secondary">Batal</a>
+                <a href="{{ route('admin.jip.index') }}" class="btn btn-secondary">Batal</a>
             </form>
         </div>
     </div>

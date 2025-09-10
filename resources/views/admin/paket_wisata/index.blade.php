@@ -16,7 +16,7 @@
 
     {{-- Tombol Tambah --}}
     <div class="mb-3">
-        <a href="{{ route('paket-wisata.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.paket-wisata.create') }}" class="btn btn-primary">
             <i class="fas fa-plus-circle me-1"></i> Tambah Paket Wisata
         </a>
     </div>
@@ -44,10 +44,10 @@
                             <td>Rp {{ number_format($paket->harga, 0, ',', '.') }}</td>
                             <td>{{ \Illuminate\Support\Str::limit($paket->deskripsi, 60) }}</td>
                             <td>
-                                <a href="{{ route('paket-wisata.edit', $paket->id) }}" class="btn btn-sm btn-warning me-1">
+                                <a href="{{ route('admin.paket-wisata.edit', $paket->id) }}" class="btn btn-sm btn-warning me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('paket-wisata.destroy', $paket->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus paket ini?')">
+                                <form action="{{ route('admin.paket-wisata.destroy', $paket->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus paket ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">
