@@ -6,9 +6,49 @@ use App\Models\LokasiJemput;
 use Illuminate\Http\Request;
 use App\Models\PaketWisata;
 use App\Models\Pemesanan;
+use Illuminate\Support\Facades\Storage;
 
 class PemesananController extends Controller
 {
+    public function index()
+    {
+        $pemesanans = Pemesanan::with(['paketWisata', 'lokasiJemput'])->latest()->get();
+        return view('admin.pemesanan.index', compact('pemesanans'));
+    }
+
+    public function detail($id)
+    {
+        $pemesanan = Pemesanan::with(['paketWisata', 'lokasiJemput'])->findOrFail($id);
+        return view('admin.pemesanan.detail', compact('pemesanan'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,disetujui,ditolak'
+        ]);
+
+        $pemesanan = Pemesanan::findOrFail($id);
+        $pemesanan->update(['status' => $request->status]);
+
+        return redirect()->route('admin.pemesanan.index')->with('success', 'Status pemesanan berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $pemesanan = Pemesanan::findOrFail($id);
+
+        if ($pemesanan->bukti_pembayaran) {
+            Storage::disk('public')->delete($pemesanan->bukti_pembayaran);
+        }
+
+
+        $pemesanan->delete();
+
+        return redirect()->route('admin.pemesanan.index')->with('success', 'Data pemesanan berhasil dihapus.');
+    }
+
+
     public function create($id)
     {
         $paket = PaketWisata::findOrFail($id);
@@ -20,8 +60,8 @@ class PemesananController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'telepon' => 'required|regex:/^[0-9]{10,15}$/',
-            'tanggal_berangkat' => 'required|date|after_or_equal:today',
+            'telepon' => 'required|regex:/^(\+62|0)[0-9]{9,13}$/',
+            'tanggal_berangkat' => 'required|date|after_or_equal:today|before_or_equal:' . now()->addYear()->format('Y-m-d'),
             'jumlah_orang' => 'required|integer|min:1',
             'lokasi_jemput_id' => 'required|exists:lokasi_jemputs,id',
             'paket_id' => 'required|exists:paket_wisatas,id',
@@ -56,7 +96,7 @@ class PemesananController extends Controller
 
     public function show($id)
     {
-        $pemesanan = Pemesanan::with('paketWisata')->findOrFail($id);
+        $pemesanan = Pemesanan::with('paketWisata', 'lokasiJemput')->findOrFail($id);
         return view('pages.bukti-pemesanan', compact('pemesanan'));
     }
 }

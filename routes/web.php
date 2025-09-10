@@ -22,6 +22,11 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 })->name('admin.dashboard');
 
+Route::get('/admin/pemesanan', [PemesananController::class, 'index'])->name('admin.pemesanan.index');
+Route::get('/admin/pemesanan/{id}', [PemesananController::class, 'detail'])->name('admin.pemesanan.detail');
+Route::put('/admin/pemesanan/{id}/status', [PemesananController::class, 'updateStatus'])->name('admin.pemesanan.updateStatus');
+Route::delete('/admin/pemesanan/{id}', [PemesananController::class, 'destroy'])->name('admin.pemesanan.destroy');
+
 Route::get('/admin/paket-wisata', [PaketWisataController::class, 'index'])->name('paket-wisata.index');
 Route::get('/admin/paket-wisata/create', [PaketWisataController::class, 'create'])->name('paket-wisata.create');
 Route::post('/admin/paket-wisata', [PaketWisataController::class, 'store'])->name('paket-wisata.store');

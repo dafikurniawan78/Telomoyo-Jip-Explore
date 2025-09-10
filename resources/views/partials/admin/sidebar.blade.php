@@ -13,6 +13,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.pemesanan.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-receipt"></i>
+                        <p>Pemesanan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('paket-wisata.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-map-marker-alt"></i>
                         <p>Paket Wisata</p>
