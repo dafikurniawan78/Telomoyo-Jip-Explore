@@ -1,0 +1,57 @@
+/* Table Styling */
+.detail-table th {
+    background-color: #f8f9fa;
+    width: 200px;
+    vertical-align: middle;
+    font-weight: 600;
+    color: #495057;
+}
+
+.detail-table td {
+    vertical-align: middle;
+}
+
+/* Status Badge */
+.status-badge {
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Form Update Status */
+.status-form {
+    text-align: center;
+}
+
+.status-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.status-actions button {
+    min-width: 140px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    padding: 8px 14px;
+}
+
+.status-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+/* Back Button */
+.back-btn {
+    margin-top: 20px;
+    text-align: center;
+}
