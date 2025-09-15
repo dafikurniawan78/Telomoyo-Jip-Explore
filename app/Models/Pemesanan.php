@@ -15,25 +15,50 @@ class Pemesanan extends Model
         'nama',
         'telepon',
         'tanggal_berangkat',
+        'jam_berangkat',
         'jumlah_orang',
         'jumlah_jip',
         'lokasi_jemput_id',
         'paket_id',
-        'jam_berangkat',
         'total',
         'status',
         'bukti_pembayaran',
     ];
 
-    // Relasi ke Paket Wisata
+    protected $casts = [
+        'tanggal_berangkat' => 'date',
+        'jam_berangkat' => 'datetime:H:i',
+    ];
+
+    /**
+     * Relasi ke Paket Wisata
+     */
     public function paketWisata()
     {
         return $this->belongsTo(PaketWisata::class, 'paket_id');
     }
 
-    // Relasi ke Lokasi Jemput
+    /**
+     * Relasi ke Lokasi Jemput
+     */
     public function lokasiJemput()
     {
         return $this->belongsTo(LokasiJemput::class, 'lokasi_jemput_id');
+    }
+
+    /**
+     * Relasi ke Antrean
+     */
+    public function antrean()
+    {
+        return $this->hasOne(Antrean::class);
+    }
+
+    /**
+     * Relasi ke Alokasi Jip
+     */
+    public function alokasiJip()
+    {
+        return $this->hasOne(AlokasiJip::class);
     }
 }

@@ -60,7 +60,7 @@
                     <label for="status" class="form-label d-block">Status</label>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="status" id="statusTersedia" value="tersedia"
-                            {{ old('status') == 'tersedia' ? 'checked' : '' }} required>
+                            {{ old('status', 'tersedia') == 'tersedia' ? 'checked' : '' }} required>
                         <label class="form-check-label" for="statusTersedia">Tersedia</label>
                     </div>
                     <div class="form-check form-check-inline">

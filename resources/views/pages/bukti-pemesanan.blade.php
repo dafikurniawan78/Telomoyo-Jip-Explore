@@ -3,7 +3,7 @@
 @section('title', 'Bukti Pemesanan | Telomoyo Jip Explore')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/bukti-pemesananstyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/buktipemesananstyle.css') }}">
 @endpush
 
 @section('content')

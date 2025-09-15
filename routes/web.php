@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AntreanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\PaketWisataController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\LokasiJemputController;
 use App\Http\Controllers\JipController;
+use App\Models\Antrean;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -26,6 +28,11 @@ Route::get('/admin/pemesanan', [PemesananController::class, 'index'])->name('adm
 Route::get('/admin/pemesanan/{id}', [PemesananController::class, 'detail'])->name('admin.pemesanan.detail');
 Route::put('/admin/pemesanan/{id}/status', [PemesananController::class, 'updateStatus'])->name('admin.pemesanan.updateStatus');
 Route::delete('/admin/pemesanan/{id}', [PemesananController::class, 'destroy'])->name('admin.pemesanan.destroy');
+
+Route::get('/admin/antrean', [AntreanController::class, 'index'])->name('admin.antrean.index');
+Route::post('/admin/antrean/store/{pemesananId}', [AntreanController::class, 'storeFromPemesanan'])->name('admin.antrean.storeFromPemesanan');
+Route::put('/admin/antrean/{id}/status', [AntreanController::class, 'updateStatus'])->name('admin.antrean.updateStatus');
+Route::delete('/admin/antrean.{id}', [AntreanController::class, 'destroy'])->name('admin.antrean.destroy');
 
 Route::get('/admin/paket-wisata', [PaketWisataController::class, 'index'])->name('admin.paket-wisata.index');
 Route::get('/admin/paket-wisata/create', [PaketWisataController::class, 'create'])->name('admin.paket-wisata.create');

@@ -43,7 +43,7 @@ class PaketWisataController extends Controller
             'deskripsi' => $request->deskripsi,
         ]);
 
-        return redirect()->route('paket-wisata.index')->with('success', 'Paket wisata berhasil ditambahkan.');
+        return redirect()->route('admin.paket-wisata.index')->with('success', 'Paket wisata berhasil ditambahkan.');
     }
 
     /**
@@ -78,7 +78,7 @@ class PaketWisataController extends Controller
         $paketWisata = PaketWisata::findOrFail($id);
         $paketWisata->update($request->only(['nama_paket', 'durasi', 'harga', 'deskripsi']));
 
-        return redirect()->route('paket-wisata.index')->with('success', 'Paket wisata berhasil diperbarui.');
+        return redirect()->route('admin.paket-wisata.index')->with('success', 'Paket wisata berhasil diperbarui.');
     }
 
     /**
@@ -89,6 +89,6 @@ class PaketWisataController extends Controller
         $paketWisata = PaketWisata::findOrFail($id);
         $paketWisata->delete();
 
-        return redirect()->route('paket-wisata.index')->with('success', 'Paket wisata berhasil dihapus.');
+        return redirect()->route('admin.paket-wisata.index')->with('success', 'Paket wisata berhasil dihapus.');
     }
 }

@@ -41,7 +41,13 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $jip->plat_nomor }}</td>
                             <td>{{ $jip->kapasitas }}</td>
-                            <td>{{ $jip->driver ?? '-' }}</td>
+                            <td>
+                                @if($jip->driver)
+                                    {{ $jip->driver }}
+                                @else
+                                    <span class="badge bg-secondary">Belum ada driver</span>
+                                @endif
+                            </td>
                             <td>
                                 @if($jip->status == 'tersedia')
                                     <span class="badge bg-success">{{ ucfirst($jip->status) }}</span>
