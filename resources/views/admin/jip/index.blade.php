@@ -80,5 +80,9 @@
         </div>
     </div>
 
+    {{-- Pagination --}}
+    <div class="mt-3 d-flex justify-content-center">
+        {{ $jips->links() }}
+    </div>
 </div>
 @endsection

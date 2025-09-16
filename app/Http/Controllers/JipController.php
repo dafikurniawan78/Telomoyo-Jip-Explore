@@ -12,7 +12,7 @@ class JipController extends Controller
      */
     public function index()
     {
-        $jips = Jip::all();
+        $jips = Jip::orderBy('id', 'desc')->paginate(10);
         return view('admin.jip.index', compact('jips'));
     }
 
