@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Antrean;
 use App\Models\LokasiJemput;
 use Illuminate\Http\Request;
 use App\Models\PaketWisata;
@@ -29,7 +30,20 @@ class PemesananController extends Controller
         ]);
 
         $pemesanan = Pemesanan::findOrFail($id);
+
         $pemesanan->update(['status' => $request->status]);
+
+        if ($request->status === 'disetujui') {
+            if (!$pemesanan->antrean) {
+                $lastNumber = Antrean::max('nomor_antrean') ?? 0;
+
+                Antrean::create([
+                    'pemesanan_id' => $pemesanan->id,
+                    'nomor_antrean' => $lastNumber + 1,
+                    'status' => 'menunggu',
+                ]);
+            }
+        }
 
         return redirect()->route('admin.pemesanan.index')->with('success', 'Status pemesanan berhasil diperbarui.');
     }

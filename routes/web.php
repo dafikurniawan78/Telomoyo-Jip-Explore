@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlokasiJipController;
 use App\Http\Controllers\AntreanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
@@ -35,6 +36,8 @@ Route::put('/admin/antrean/{id}/status', [AntreanController::class, 'updateStatu
 Route::delete('/admin/antrean/{id}', [AntreanController::class, 'destroy'])->name('admin.antrean.destroy');
 Route::put('/admin/antrean/{id}/layani', [AntreanController::class, 'layani'])->name('admin.antrean.layani');
 Route::put('/admin/antrean/{id}/selesai', [AntreanController::class, 'selesai'])->name('admin.antrean.selesai');
+
+Route::get('/admin/alokasi', [AlokasiJipController::class, 'index'])->name('admin.alokasi.index');
 
 Route::get('/admin/paket-wisata', [PaketWisataController::class, 'index'])->name('admin.paket-wisata.index');
 Route::get('/admin/paket-wisata/create', [PaketWisataController::class, 'create'])->name('admin.paket-wisata.create');

@@ -34,6 +34,14 @@
                     </a>
                 </li>
 
+                {{-- Alokasi --}}
+                <li class="nav-item">
+                    <a href="{{ route('admin.alokasi.index') }}" class="nav-link {{ request()->routeIs('admin.alokasi.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tasks"></i>
+                        <p>Data Alokasi</p>
+                    </a>
+                </li>
+
                 {{-- Paket Wisata --}}
                 <li class="nav-item">
                     <a href="{{ route('admin.paket-wisata.index') }}"

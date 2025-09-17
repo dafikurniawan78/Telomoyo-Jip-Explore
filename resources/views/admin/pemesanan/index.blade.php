@@ -29,6 +29,7 @@
                         <th>Jumlah Orang</th>
                         <th>Total</th>
                         <th>Status</th>
+                        <th>Bukti</th>
                         <th style="width: 150px;">Aksi</th>
                     </tr>
                 </thead>
@@ -53,15 +54,58 @@
                                 @endif
                             </td>
                             <td>
+                                @if ($pemesanan->bukti_pembayaran)
+                                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#buktiModal{{ $pemesanan->id }}">
+                                        <i class="fas fa-image"></i> Lihat
+                                    </button>
+
+                                    <!-- Modal Bukti Pembayaran -->
+                                    <div class="modal fade" id="buktiModal{{ $pemesanan->id }}" tabindex="-1" aria-labelledby="buktiModalLabel{{ $pemesanan->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="buktiModalLabel{{ $pemesanan->id }}">Bukti Pembayaran</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body text-center">
+                                                    <img src="{{ asset('storage/' . $pemesanan->bukti_pembayaran) }}" class="img-fluid rounded shadow" alt="Bukti Pembayaran">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                {{-- Tombol Setujui --}}
+                                @if ($pemesanan->status == 'pending')
+                                    <form action="{{ route('admin.pemesanan.updateStatus', $pemesanan->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="disetujui">
+                                        <button class="btn btn-sm btn-success">
+                                            <i class="fas fa-check"></i> Setujui
+                                        </button>
+                                    </form>
+
+                                    {{-- Tombol Tolak --}}
+                                    <form action="{{ route('admin.pemesanan.updateStatus', $pemesanan->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="ditolak">
+                                        <button class="btn btn-sm btn-danger">
+                                            <i class="fas fa-times"></i> Tolak
+                                        </button>
+                                    </form>
+                                @endif
                                 {{-- Detail --}}
-                                <a href="{{ route('admin.pemesanan.detail', $pemesanan->id) }}"
-                                class="btn btn-sm btn-info me-1">
+                                <a href="{{ route('admin.pemesanan.detail', $pemesanan->id) }}" class="btn btn-sm btn-secondary me-1">
                                     <i class="fas fa-eye"></i>
                                 </a>
+
                                 {{-- Hapus --}}
-                                <form action="{{ route('admin.pemesanan.destroy', $pemesanan->id) }}"
-                                    method="POST" class="d-inline"
-                                    onsubmit="return confirm('Yakin ingin menghapus pemesanan ini?')">
+                                <form action="{{ route('admin.pemesanan.destroy', $pemesanan->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus pemesanan ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">
@@ -72,7 +116,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10" class="text-center text-muted">Belum ada data pemesanan.</td>
+                            <td colspan="11" class="text-center text-muted">Belum ada data pemesanan.</td>
                         </tr>
                     @endforelse
                 </tbody>
