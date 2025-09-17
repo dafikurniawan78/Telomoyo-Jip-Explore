@@ -14,11 +14,6 @@
         </ol>
     </nav>
 
-    {{-- Notifikasi --}}
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
     {{-- Tabel Antrean --}}
     <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -54,17 +49,25 @@
                             <td>{{ $antrean->waktu_mulai ? $antrean->waktu_mulai->format('H:i d-m-Y') : '-' }}</td>
                             <td>{{ $antrean->waktu_selesai ? $antrean->waktu_selesai->format('H:i d-m-Y') : '-' }}</td>
                             <td>
-                                {{-- Form Update Status --}}
-                                <form action="{{ route('admin.antrean.updateStatus', $antrean->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('PUT')
-                                    <select name="status" class="form-select form-select-sm d-inline w-auto">
-                                        <option value="menunggu" {{ $antrean->status == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
-                                        <option value="sedang dilayani" {{ $antrean->status == 'sedang dilayani' ? 'selected' : '' }}>Sedang Dilayani</option>
-                                        <option value="selesai" {{ $antrean->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                </form>
+                                @if($antrean->status == 'menunggu')
+                                    <form action="{{ route('admin.antrean.layani', $antrean->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Layani antrean ini sekarang?')">
+                                            <i class="fas fa-play"></i> Layani
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if($antrean->status == 'sedang dilayani')
+                                    <form action="{{ route('admin.antrean.selesai', $antrean->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Selesaikan antrean ini sekarang?')">
+                                            <i class="fas fa-check"></i> Selesai
+                                        </button>
+                                    </form>
+                                @endif
 
                                 {{-- Tombol Hapus --}}
                                 <form action="{{ route('admin.antrean.destroy', $antrean->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus antrean ini?')">
@@ -84,5 +87,9 @@
         </div>
     </div>
 
+    {{-- Pagination --}}
+    <div class="mt-3 d-flex justify-content-center">
+        {{ $antreans->links() }}
+    </div>
 </div>
 @endsection
