@@ -11,50 +11,51 @@
 
     @stack('styles')
 </head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
+    <div class="wrapper">
 
-    {{-- Navbar --}}
-    @include('partials.admin.navbar')
+        {{-- Navbar --}}
+        @include('partials.admin.navbar')
 
-    {{-- Sidebar --}}
-    @include('partials.admin.sidebar')
+        {{-- Sidebar --}}
+        @include('partials.admin.sidebar')
 
-    <!-- Content Wrapper -->
-    <div class="content-wrapper">
-        <section class="content pt-3">
-            <div class="container-fluid">
-                @yield('content')
-            </div>
-        </section>
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <section class="content pt-3">
+                <div class="container-fluid">
+                    @yield('content')
+                </div>
+            </section>
+        </div>
+
+        {{-- Footer --}}
+        @include('partials.admin.footer')
     </div>
 
-    {{-- Footer --}}
-    @include('partials.admin.footer')
-</div>
+    <!-- AdminLTE Scripts -->
+    <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 
-<!-- AdminLTE Scripts -->
-<script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- SweetAlert2 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Notifikasi flash session (jika ada) -->
-@if (session('success'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: '{{ session('success') }}',
-            timer: 2500,
-            showConfirmButton: false
+    <!-- Notifikasi flash session (jika ada) -->
+    @if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 2500,
+                showConfirmButton: false
+            });
         });
-    });
-</script>
-@endif
+    </script>
+    @endif
 
+    @stack('scripts')
 </body>
 </html>

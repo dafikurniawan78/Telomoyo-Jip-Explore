@@ -1,14 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlokasiJipController;
 use App\Http\Controllers\AntreanController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaketWisataController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\LokasiJemputController;
 use App\Http\Controllers\JipController;
-use App\Models\Antrean;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -21,9 +21,7 @@ Route::get('/pemesanan/create/{id}', [PemesananController::class, 'create'])->na
 Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
 Route::get('/pemesanan/show/{id}', [PemesananController::class, 'show'])->name('pemesanan.show');
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::get('/admin/pemesanan', [PemesananController::class, 'index'])->name('admin.pemesanan.index');
 Route::get('/admin/pemesanan/{id}', [PemesananController::class, 'detail'])->name('admin.pemesanan.detail');
