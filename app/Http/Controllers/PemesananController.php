@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Antrean;
 use App\Models\LokasiJemput;
-use Illuminate\Http\Request;
 use App\Models\PaketWisata;
 use App\Models\Pemesanan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Storage;
 
 class PemesananController extends Controller
@@ -31,7 +33,10 @@ class PemesananController extends Controller
 
         $pemesanan = Pemesanan::findOrFail($id);
 
-        $pemesanan->update(['status' => $request->status]);
+        $pemesanan->update([
+            'status' => $request->status,
+            'approved_by' => Auth::id(),
+        ]);
 
         if ($request->status === 'disetujui') {
             if (!$pemesanan->antrean) {

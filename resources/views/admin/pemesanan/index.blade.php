@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     {{-- Breadcrumb --}}
-    <h2 class="mb-3">Kelola Pemesanan</h2>
+    <h2 class="mb-3 fw-bold">Kelola Pemesanan</h2>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
@@ -30,6 +30,7 @@
                         <th>Total</th>
                         <th>Status</th>
                         <th>Bukti</th>
+                        <th>Diproses Oleh</th>
                         <th style="width: 150px;">Aksi</th>
                     </tr>
                 </thead>
@@ -77,6 +78,7 @@
                                     <span class="text-muted">-</span>
                                 @endif
                             </td>
+                            <td>{{ $pemesanan->approvedBy->name ?? '-' }}</td>
                             <td>
                                 {{-- Tombol Setujui --}}
                                 @if ($pemesanan->status == 'pending')
@@ -116,7 +118,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="text-center text-muted">Belum ada data pemesanan.</td>
+                            <td colspan="12" class="text-center text-muted">Belum ada data pemesanan.</td>
                         </tr>
                     @endforelse
                 </tbody>

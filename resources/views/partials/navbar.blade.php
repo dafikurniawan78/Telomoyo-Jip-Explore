@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg sticky-top shadow-sm custom-navbar">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center fw-bold" href="/">
-            <img src="{{ asset('../asset/img/Logo TJE.png') }}" alt="Logo Telomoyo" width="52" class="me-2">
+            <img src="{{ asset('../asset/img/Logo TJE.png') }}" alt="Logo TJE" width="52" class="me-2">
             Telomoyo Jip Explore
         </a>
 

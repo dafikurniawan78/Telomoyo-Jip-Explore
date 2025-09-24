@@ -47,6 +47,14 @@ class Pemesanan extends Model
     }
 
     /**
+     * Relasi ke User
+     */
+    public function approvedBy()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /**
      * Relasi ke Antrean
      */
     public function antrean()

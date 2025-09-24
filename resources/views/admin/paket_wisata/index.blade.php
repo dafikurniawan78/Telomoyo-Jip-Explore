@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     {{-- Breadcrumb --}}
-    <h2 class="mb-3">Kelola Paket Wisata</h2>
+    <h2 class="mb-3 fw-bold">Kelola Paket Wisata</h2>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>

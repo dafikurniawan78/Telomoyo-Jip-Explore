@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     {{-- Judul --}}
-    <h1 class="mb-4">Dashboard</h1>
+    <h1 class="mb-4 fw-bold">Dashboard</h1>
     <p class="text-muted">Selamat datang di Dashboard Admin Telomoyo Jip Explore!</p>
 
     {{-- Statistik Ringkas --}}
