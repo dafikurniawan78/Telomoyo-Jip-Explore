@@ -30,7 +30,7 @@
     <div class="card shadow-lg rounded-3">
         <div class="card-body p-0">
             <div class="table-responsive rounded">
-                <table class="table table-striped mb-0">
+                <table class="table table-striped table- bordered mb-0">
                     <thead class="table-dark">
                         <tr>
                             <th style="width: 50px;">No</th>

@@ -38,7 +38,7 @@ class JipController extends Controller
 
         Jip::create($data);
 
-        return redirect()->route('jip.index')->with('success', 'Data jip berhasil ditambahkan');
+        return redirect()->route('admin.jip.index')->with('success', 'Data jip berhasil ditambahkan');
     }
 
     /**
@@ -74,7 +74,7 @@ class JipController extends Controller
 
         $jip->update($request->all());
 
-        return redirect()->route('jip.index')->with('success', 'Data jip berhasil diperbarui');
+        return redirect()->route('admin.jip.index')->with('success', 'Data jip berhasil diperbarui');
     }
 
     /**
@@ -85,6 +85,6 @@ class JipController extends Controller
         $jip = Jip::findOrFail($id);
         $jip->delete();
 
-        return redirect()->route('jip.index')->with('success', 'Data jip berhasil dihapus');
+        return redirect()->route('admin.jip.index')->with('success', 'Data jip berhasil dihapus');
     }
 }

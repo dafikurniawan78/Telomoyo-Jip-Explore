@@ -1,0 +1,50 @@
+:root {
+        --primary: #e8591c; /* Oranye */
+        --danger: #bb2d3b;   /* Merah gelap */
+        --secondary: #ffc107; /* Kuning */
+    }
+
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+
+    .login-bg {
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, var(--primary), var(--danger));
+        animation: breathing 6s ease-in-out infinite;
+    }
+
+    /* Styling untuk checkbox agar lebih jelas */
+.styled-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #444648; /* biru biar jelas */
+    border-radius: 4px; /* agak rounded */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.styled-checkbox:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.6);
+}
+
+
+    @keyframes breathing {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.95; }
+    }
+
+    .fade-in-card {
+        animation: fadeInUp 0.8s ease-out;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
