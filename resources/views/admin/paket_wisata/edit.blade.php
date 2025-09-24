@@ -4,16 +4,33 @@
 
 @section('content')
 <div class="container-fluid">
+    <h2 class="mb-3 fw-bold">Edit Paket Wisata</h2>
 
     {{-- Breadcrumb --}}
-    <h2 class="mb-3">Edit Paket Wisata</h2>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.paket-wisata.index') }}">Paket Wisata</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Edit</li>
-        </ol>
-    </nav>
+    <div class="bg-light rounded-3 shadow-sm p-3 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 p-2">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('admin.dashboard') }}" class="text-muted fw-medium text-decoration-none">
+                        <i class="fas fa-tachometer-alt me-1"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('admin.paket-wisata.index') }}" class="text-muted fw-medium text-decoration-none">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        Paket Wisata
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span class="text-primary fw-medium">
+                        <i class="fas fa-edit me-1"></i>
+                        Edit Data
+                    </span>
+                </li>
+            </ol>
+        </nav>
+    </div>
 
     {{-- Form Edit --}}
     <div class="card shadow-sm">

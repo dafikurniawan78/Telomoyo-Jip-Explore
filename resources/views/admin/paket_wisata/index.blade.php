@@ -4,15 +4,27 @@
 
 @section('content')
 <div class="container-fluid">
+    <h2 class="mb-3 fw-bold">Kelola Paket Wisata</h2>
 
     {{-- Breadcrumb --}}
-    <h2 class="mb-3 fw-bold">Kelola Paket Wisata</h2>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Paket Wisata</li>
-        </ol>
-    </nav>
+    <div class="bg-light rounded-3 shadow-sm p-3 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 p-2">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('admin.dashboard') }}" class="text-muted fw-medium text-decoration-none">
+                        <i class="fas fa-tachometer-alt me-1"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span class="text-primary fw-medium">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        Paket Wisata
+                    </span>
+                </li>
+            </ol>
+        </nav>
+    </div>
 
     {{-- Tombol Tambah --}}
     <div class="mb-3">
@@ -22,9 +34,10 @@
     </div>
 
     {{-- Tabel Data --}}
-    <div class="card shadow-sm">
+    <div class="card shadow-lg rounded-3">
         <div class="card-body p-0">
-            <table class="table table-striped table-bordered mb-0">
+            <div class="table-responsive rounded">
+                <table class="table table-striped mb-0">
                 <thead class="table-dark">
                     <tr>
                         <th style="width: 50px;">No</th>
@@ -63,6 +76,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
