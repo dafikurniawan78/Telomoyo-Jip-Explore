@@ -6,6 +6,7 @@ use App\Models\Antrean;
 use App\Models\LokasiJemput;
 use App\Models\PaketWisata;
 use App\Models\Pemesanan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -79,7 +80,7 @@ class PemesananController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'telepon' => 'required|regex:/^(\+62|0)[0-9]{9,13}$/',
+            'telepon' => 'required|digits_between:9,13|starts_with:0,62',
             'tanggal_berangkat' => 'required|date|after_or_equal:today|before_or_equal:' . now()->addYear()->format('Y-m-d'),
             'jumlah_orang' => 'required|integer|min:1',
             'lokasi_jemput_id' => 'required|exists:lokasi_jemputs,id',
@@ -117,5 +118,20 @@ class PemesananController extends Controller
     {
         $pemesanan = Pemesanan::with('paketWisata', 'lokasiJemput')->findOrFail($id);
         return view('pages.bukti-pemesanan', compact('pemesanan'));
+    }
+
+    public function cetak($id)
+    {
+        $pemesanan = Pemesanan::with(['paketWisata', 'lokasiJemput'])->findOrFail($id);
+
+        // Custom size tiket: 20cm x 7cm (portrait)
+        $width = 20 * 28.35; // 567 pt
+        $height = 7 * 28.35; // 198 pt
+        $customPaper = [0, 0, $width, $height];
+
+        $pdf = Pdf::loadView('pdf.tiket', compact('pemesanan'))
+            ->setPaper($customPaper, 'portrait'); // gunakan portrait
+
+        return $pdf->download('Tiket-Pemesanan-' . $pemesanan->id . '.pdf');
     }
 }

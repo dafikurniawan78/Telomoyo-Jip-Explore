@@ -18,9 +18,11 @@ use App\Http\Controllers\JipController;
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/paket', [BerandaController::class, 'paket'])->name('paket');
 
+Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
 Route::get('/pemesanan/create/{id}', [PemesananController::class, 'create'])->name('pemesanan.create');
 Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
 Route::get('/pemesanan/show/{id}', [PemesananController::class, 'show'])->name('pemesanan.show');
+Route::get('/pemesanan/{id}/cetak', [PemesananController::class, 'cetak'])->name('pemesanan.cetak');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');

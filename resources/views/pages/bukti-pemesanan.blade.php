@@ -82,7 +82,7 @@
                 <a href="{{ route('beranda') }}" class="btn btn-success btn-md px-4 shadow">
                     <i class="bi bi-house-door-fill"></i> Kembali ke Beranda
                 </a>
-                <a href="#" class="btn btn-outline-danger btn-md px-4 shadow ms-2">
+                <a href="{{ route('pemesanan.cetak', $pemesanan->id) }}" class="btn btn-outline-danger btn-md px-4 shadow ms-2">
                     <i class="bi bi-printer"></i> Cetak Bukti
                 </a>
             </div>

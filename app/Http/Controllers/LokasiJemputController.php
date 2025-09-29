@@ -37,7 +37,7 @@ class LokasiJemputController extends Controller
             'nama_lokasi' => $request->nama_lokasi
         ]);
 
-        return redirect()->route('lokasi-jemput.index')->with('success', 'Lokasi jemput berhasil ditambahkan');
+        return redirect()->route('admin.lokasi-jemput.index')->with('success', 'Lokasi jemput berhasil ditambahkan');
     }
 
     /**
@@ -71,7 +71,7 @@ class LokasiJemputController extends Controller
             'nama_lokasi' => $request->nama_lokasi
         ]);
 
-        return redirect()->route('lokasi-jemput.index')->with('success', 'Lokasi jemput berhasil diperbarui');
+        return redirect()->route('admin.lokasi-jemput.index')->with('success', 'Lokasi jemput berhasil diperbarui');
     }
 
     /**
@@ -80,6 +80,6 @@ class LokasiJemputController extends Controller
     public function destroy($id)
     {
         LokasiJemput::destroy($id);
-        return redirect()->route('lokasi-jemput.index')->with('success', 'Lokasi jemput berhasil dihapus');
+        return redirect()->route('admin.lokasi-jemput.index')->with('success', 'Lokasi jemput berhasil dihapus');
     }
 }
