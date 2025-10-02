@@ -23,11 +23,12 @@ class Pemesanan extends Model
         'total',
         'status',
         'bukti_pembayaran',
+        'approved_by',
     ];
 
     protected $casts = [
         'tanggal_berangkat' => 'date',
-        'jam_berangkat' => 'datetime:H:i',
+        'jam_berangkat' => 'string',
     ];
 
     /**
@@ -59,7 +60,7 @@ class Pemesanan extends Model
      */
     public function antrean()
     {
-        return $this->hasOne(Antrean::class);
+        return $this->hasOne(Antrean::class, 'pemesanan_id', 'id');
     }
 
     /**
@@ -67,6 +68,13 @@ class Pemesanan extends Model
      */
     public function alokasiJip()
     {
-        return $this->hasOne(AlokasiJip::class);
+        return $this->hasOneThrough(
+            AlokasiJip::class,
+            Antrean::class,
+            'pemesanan_id',
+            'antrean_id',
+            'id',
+            'id'
+        );
     }
 }

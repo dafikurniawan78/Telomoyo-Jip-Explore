@@ -45,6 +45,7 @@
                             <th>Kapasitas</th>
                             <th>Driver</th>
                             <th>Status</th>
+                            <th>Sedang Dipakai Untuk</th>
                             <th style="width: 150px;">Aksi</th>
                         </tr>
                     </thead>
@@ -53,7 +54,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $jip->plat_nomor }}</td>
-                                <td>{{ $jip->kapasitas }}</td>
+                                <td>{{ $jip->kapasitas }} Orang</td>
                                 <td>
                                     @if($jip->driver)
                                         {{ $jip->driver }}
@@ -63,11 +64,24 @@
                                 </td>
                                 <td>
                                     @if($jip->status == 'tersedia')
-                                        <span class="badge bg-success">{{ ucfirst($jip->status) }}</span>
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-circle me-1"></i> Tersedia
+                                        </span>
                                     @elseif($jip->status == 'digunakan')
-                                        <span class="badge bg-warning text-dark">{{ ucfirst($jip->status) }}</span>
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="fas fa-car me-1"></i> Digunakan
+                                        </span>
                                     @else
-                                        <span class="badge bg-secondary">{{ ucfirst($jip->status) }}</span>
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-times-circle me-1"></i> Tidak Aktif
+                                        </span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($jip->status == 'digunakan' && $jip->alokasiJipAktif?->antrean?->pemesanan)
+                                        {{ $jip->alokasiJipAktif->antrean->pemesanan->nama }}
+                                    @else
+                                        <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
@@ -85,7 +99,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted">Belum ada data jip.</td>
+                                <td colspan="7" class="text-center text-muted">Belum ada data jip.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -95,8 +109,13 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="mt-3 d-flex justify-content-center">
-        {{ $jips->links() }}
+    <div class="mt-3 d-flex justify-content-between align-items-center">
+        <div class="text-muted small">
+            Menampilkan {{ $jips->firstItem() }} - {{ $jips->lastItem() }} dari {{ $jips->total() }} data jip
+        </div>
+        <div>
+            {{ $jips->links() }}
+        </div>
     </div>
 </div>
 @endsection

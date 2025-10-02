@@ -12,19 +12,24 @@ class AlokasiJip extends Model
     protected $table = 'alokasi_jips';
 
     protected $fillable = [
-        'pemesanan_id',
+        'antrean_id',
         'jip_id',
         'waktu_mulai',
         'waktu_selesai',
     ];
 
+    protected $casts = [
+        'waktu_mulai' => 'datetime',
+        'waktu_selesai' => 'datetime',
+    ];
+
     public function antrean()
     {
-        return $this->belongsTo(Antrean::class);
+        return $this->belongsTo(Antrean::class, 'antrean_id');
     }
 
     public function jip()
     {
-        return $this->belongsTo(Jip::class);
+        return $this->belongsTo(Jip::class, 'jip_id');
     }
 }

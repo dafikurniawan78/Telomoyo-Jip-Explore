@@ -52,7 +52,8 @@
 
                 <div class="mb-3">
                     <label for="plat_nomor" class="form-label">Plat Nomor</label>
-                    <input type="text" name="plat_nomor" class="form-control @error('plat_nomor') is-invalid @enderror" value="{{ old('plat_nomor') }}" required>
+                    <input type="text" name="plat_nomor" class="form-control @error('plat_nomor') is-invalid @enderror"
+                           value="{{ old('plat_nomor') }}" required>
                     @error('plat_nomor')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -60,7 +61,8 @@
 
                 <div class="mb-3">
                     <label for="kapasitas" class="form-label">Kapasitas</label>
-                    <input type="number" name="kapasitas" class="form-control @error('kapasitas') is-invalid @enderror" value="{{ old('kapasitas', 4) }}" required>
+                    <input type="number" name="kapasitas" class="form-control @error('kapasitas') is-invalid @enderror"
+                           value="{{ old('kapasitas', 4) }}" min="1" required>
                     @error('kapasitas')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -68,12 +70,14 @@
 
                 <div class="mb-3">
                     <label for="driver" class="form-label">Nama Driver</label>
-                    <input type="text" name="driver" class="form-control @error('driver') is-invalid @enderror" value="{{ old('driver') }}">
+                    <input type="text" name="driver" class="form-control @error('driver') is-invalid @enderror"
+                           value="{{ old('driver') }}">
                     @error('driver')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
+                {{-- Status --}}
                 <div class="mb-3">
                     <label for="status" class="form-label d-block">Status</label>
                     <div class="form-check form-check-inline">
@@ -85,11 +89,6 @@
                         <input class="form-check-input" type="radio" name="status" id="statusTidak" value="tidak tersedia"
                             {{ old('status') == 'tidak tersedia' ? 'checked' : '' }}>
                         <label class="form-check-label" for="statusTidak">Tidak Tersedia</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="status" id="statusDigunakan" value="digunakan"
-                            {{ old('status') == 'digunakan' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="statusDigunakan">Digunakan</label>
                     </div>
                     @error('status')
                         <div class="text-danger small">{{ $message }}</div>

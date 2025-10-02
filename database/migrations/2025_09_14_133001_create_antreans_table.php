@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->integer('nomor_antrean')->index();
             $table->enum('status', ['menunggu', 'sedang dilayani', 'selesai'])->default('menunggu')->index();
-            $table->timestamp('waktu_mulai')->nullable();
-            $table->timestamp('waktu_selesai')->nullable();
+            $table->timestamp('waktu_mulai')->nullable()->index();
+            $table->timestamp('waktu_selesai')->nullable()->index();
             $table->timestamps();
         });
     }

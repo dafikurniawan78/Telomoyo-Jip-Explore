@@ -30,7 +30,7 @@
     <div class="card shadow-lg rounded-3">
         <div class="card-body p-0">
             <div class="table-responsive rounded">
-                <table class="table table-striped table- bordered mb-0">
+                <table class="table table-striped table-bordered mb-0">
                     <thead class="table-dark">
                         <tr>
                             <th style="width: 50px;">No</th>
@@ -40,7 +40,6 @@
                             <th>Status</th>
                             <th>Waktu Mulai</th>
                             <th>Waktu Selesai</th>
-                            <th style="width: 200px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,38 +60,10 @@
                                 </td>
                                 <td>{{ $antrean->waktu_mulai ? $antrean->waktu_mulai->format('H:i d-m-Y') : '-' }}</td>
                                 <td>{{ $antrean->waktu_selesai ? $antrean->waktu_selesai->format('H:i d-m-Y') : '-' }}</td>
-                                <td>
-                                    @if($antrean->status == 'menunggu')
-                                        <form action="{{ route('admin.antrean.layani', $antrean->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Layani antrean ini sekarang?')">
-                                                <i class="fas fa-play"></i> Layani
-                                            </button>
-                                        </form>
-                                    @endif
-
-                                    @if($antrean->status == 'sedang dilayani')
-                                        <form action="{{ route('admin.antrean.selesai', $antrean->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Selesaikan antrean ini sekarang?')">
-                                                <i class="fas fa-check"></i> Selesai
-                                            </button>
-                                        </form>
-                                    @endif
-
-                                    {{-- Tombol Hapus --}}
-                                    <form action="{{ route('admin.antrean.destroy', $antrean->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus antrean ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-danger">Hapus</button>
-                                    </form>
-                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted">Belum ada antrean.</td>
+                                <td colspan="7" class="text-center text-muted">Belum ada antrean.</td>
                             </tr>
                         @endforelse
                     </tbody>

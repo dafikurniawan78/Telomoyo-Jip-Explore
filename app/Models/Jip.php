@@ -18,8 +18,17 @@ class Jip extends Model
         'status',
     ];
 
+    // Semua alokasi jip
     public function alokasiJip()
     {
-        return $this->hasMany(AlokasiJip::class);
+        return $this->hasMany(AlokasiJip::class, 'jip_id', 'id');
+    }
+
+    // Alokasi yang sedang aktif (sedang digunakan)
+    public function alokasiJipAktif()
+    {
+        return $this->hasOne(AlokasiJip::class, 'jip_id', 'id')
+            ->where('waktu_mulai', '<=', now())
+            ->where('waktu_selesai', '>=', now());
     }
 }

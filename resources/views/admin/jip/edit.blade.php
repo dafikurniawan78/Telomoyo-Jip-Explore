@@ -35,7 +35,7 @@
     {{-- Form Edit --}}
     <div class="card shadow-sm">
         <div class="card-body">
-            {{-- Tampilkan error validasi --}}
+            {{-- Error validasi --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <strong>Oops!</strong> Ada kesalahan pada input Anda:
@@ -54,7 +54,7 @@
                 <div class="mb-3">
                     <label for="plat_nomor" class="form-label">Plat Nomor</label>
                     <input type="text" name="plat_nomor" class="form-control @error('plat_nomor') is-invalid @enderror"
-                        value="{{ old('plat_nomor', $jip->plat_nomor) }}" required>
+                        value="{{ old('plat_nomor', $jip->plat_nomor) }}" required placeholder="Contoh: H 1234 AB">
                     @error('plat_nomor')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -63,7 +63,7 @@
                 <div class="mb-3">
                     <label for="kapasitas" class="form-label">Kapasitas</label>
                     <input type="number" name="kapasitas" class="form-control @error('kapasitas') is-invalid @enderror"
-                        value="{{ old('kapasitas', $jip->kapasitas) }}" min="1" required>
+                        value="{{ old('kapasitas', $jip->kapasitas) }}" min="1" required placeholder="Jumlah maksimal penumpang">
                     @error('kapasitas')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -72,13 +72,13 @@
                 <div class="mb-3">
                     <label for="driver" class="form-label">Nama Driver</label>
                     <input type="text" name="driver" class="form-control @error('driver') is-invalid @enderror"
-                        value="{{ old('driver', $jip->driver) }}">
+                        value="{{ old('driver', $jip->driver) }}" placeholder="Masukkan nama driver">
                     @error('driver')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
-                {{-- Status --}}
+                {{-- Status (hanya 2 opsi manual) --}}
                 <div class="mb-3">
                     <label class="form-label d-block">Status</label>
                     <div class="form-check form-check-inline">
@@ -90,11 +90,6 @@
                         <input class="form-check-input" type="radio" name="status" id="statusTidak"
                             value="tidak tersedia" {{ old('status', $jip->status) == 'tidak tersedia' ? 'checked' : '' }}>
                         <label class="form-check-label" for="statusTidak">Tidak Tersedia</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="status" id="statusDigunakan"
-                            value="digunakan" {{ old('status', $jip->status) == 'digunakan' ? 'checked' : '' }}>
-                        <label class="form-check-label" for="statusDigunakan">Digunakan</label>
                     </div>
                     @error('status')
                         <div class="text-danger small">{{ $message }}</div>

@@ -27,7 +27,7 @@
     </div>
 
     {{-- Tabel Data Alokasi --}}
-    <div class="card shadow-lg rounded-3">
+    <div class="card shadow-lg rounded">
         <div class="card-body p-0">
             <div class="table-responsive rounded">
                 <table class="table table-striped table-bordered mb-0">
@@ -46,18 +46,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($alokasis as $alokasi)
+                        @forelse ($antreans as $antrean)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $alokasi->antrean->pemesanan->nama ?? '-' }}</td>
-                                <td>{{ \Carbon\Carbon::parse($alokasi->antrean->pemesanan->tanggal_berangkat)->format('d-m-Y') }}</td>
-                                <td>{{ $alokasi->antrean->pemesanan->paketWisata->nama_paket ?? '-' }}</td>
-                                <td>{{ $alokasi->antrean->pemesanan->jumlah_orang }} org</td>
-                                <td>{{ $alokasi->antrean->pemesanan->jumlah_jip }}</td>
-                                <td>{{ $alokasi->antrean->pemesanan->lokasiJemput->nama_lokasi ?? '-' }}</td>
-                                <td>{{ $alokasi->jip->plat_nomor ?? '-' }}</td>
-                                <td>{{ $alokasi->waktu_mulai ? $alokasi->waktu_mulai->format('H:i d-m-Y') : '-' }}</td>
-                                <td>{{ $alokasi->waktu_selesai ? $alokasi->waktu_selesai->format('H:i d-m-Y') : '-' }}</td>
+                                <td>{{ $antrean->pemesanan->nama ?? '-' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($antrean->pemesanan->tanggal_berangkat)->format('d-m-Y') }}</td>
+                                <td>{{ $antrean->pemesanan->paketWisata->nama_paket ?? '-' }}</td>
+                                <td>{{ $antrean->pemesanan->jumlah_orang }} org</td>
+                                <td>{{ $antrean->pemesanan->jumlah_jip }}</td>
+                                <td>{{ $antrean->pemesanan->lokasiJemput->nama_lokasi ?? '-' }}</td>
+                                <td>
+                                    {{ $antrean->alokasiJip->pluck('jip.plat_nomor')->join(', ') }}
+                                </td>
+                                <td>
+                                    {{ $antrean->alokasiJip->first()?->waktu_mulai?->format('H:i d-m-Y') ?? '-' }}
+                                </td>
+                                <td>
+                                    {{ $antrean->alokasiJip->first()?->waktu_selesai?->format('H:i d-m-Y') ?? '-' }}
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -72,7 +78,7 @@
 
     {{-- Pagination --}}
     <div class="mt-3 d-flex justify-content-center">
-        {{ $alokasis->links() }}
+        {{ $antreans->links() }}
     </div>
 </div>
 @endsection

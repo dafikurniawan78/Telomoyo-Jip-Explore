@@ -28,12 +28,12 @@
 
     {{-- Tabel Data --}}
     <div class="card shadow-lg rounded-3">
-        <div class="card-body p-0">
-            <div class="table-responsive rounded">
-                <table class="table table-striped table-bordered mb-0">
+        <div class="card-body p-3">
+            <div class="table-responsive rounded-3 p-2" style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
+                <table class="table table-striped table-bordered mb-0" style="min-width: 1600px;">
                     <thead class="table-dark">
                         <tr>
-                            <th style="width: 50px;">No</th>
+                            <th>No</th>
                             <th>Nama</th>
                             <th>Telepon</th>
                             <th>Paket Wisata</th>
@@ -44,7 +44,7 @@
                             <th>Status</th>
                             <th>Bukti</th>
                             <th>Diproses Oleh</th>
-                            <th style="width: 150px;">Aksi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

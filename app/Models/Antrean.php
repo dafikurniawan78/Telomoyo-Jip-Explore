@@ -19,13 +19,18 @@ class Antrean extends Model
         'waktu_selesai',
     ];
 
+    protected $casts = [
+        'waktu_mulai' => 'datetime',
+        'waktu_selesai' => 'datetime',
+    ];
+
     public function pemesanan()
     {
-        return $this->belongsTo(Pemesanan::class);
+        return $this->belongsTo(Pemesanan::class, 'pemesanan_id', 'id');
     }
 
     public function alokasiJip()
     {
-        return $this->hasOne(AlokasiJip::class);
+        return $this->hasMany(AlokasiJip::class, 'antrean_id', 'id');
     }
 }

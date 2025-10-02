@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlokasiJip;
 use App\Models\Antrean;
 use App\Models\LokasiJemput;
 use App\Models\PaketWisata;
 use App\Models\Pemesanan;
+use App\Models\Jip;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -40,15 +42,43 @@ class PemesananController extends Controller
         ]);
 
         if ($request->status === 'disetujui') {
-            if (!$pemesanan->antrean) {
+            $antrean = $pemesanan->antrean;
+            if (!$antrean) {
                 $lastNumber = Antrean::max('nomor_antrean') ?? 0;
-
-                Antrean::create([
+                $antrean = Antrean::create([
                     'pemesanan_id' => $pemesanan->id,
                     'nomor_antrean' => $lastNumber + 1,
                     'status' => 'menunggu',
                 ]);
             }
+
+            $jumlah_jip = $pemesanan->jumlah_jip;
+            $jips = Jip::where('status', 'tersedia')->take($jumlah_jip)->get();
+
+            if ($jips->count() < $jumlah_jip) {
+                return redirect()->back()->with('error', 'Jip tersedia tidak cukup untuk pemesanan ini.');
+            }
+
+            $durasi = $pemesanan->paketWisata->durasi ?? 2;
+            $mulai = now();
+            $selesai = now()->addHours($durasi);
+
+            foreach ($jips as $jip) {
+                AlokasiJip::create([
+                    'antrean_id' => $antrean->id,
+                    'jip_id' => $jip->id,
+                    'waktu_mulai' => $mulai,
+                    'waktu_selesai' => $selesai,
+                ]);
+
+                $jip->update(['status' => 'digunakan']);
+            }
+
+            $antrean->update([
+                'status' => 'sedang dilayani',
+                'waktu_mulai' => $mulai,
+                'waktu_selesai' => $selesai,
+            ]);
         }
 
         return redirect()->route('admin.pemesanan.index')->with('success', 'Status pemesanan berhasil diperbarui.');
@@ -80,7 +110,7 @@ class PemesananController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'telepon' => 'required|digits_between:9,13|starts_with:0,62',
+            'telepon' => 'required|regex:/^[0-9]{9,13}$/',
             'tanggal_berangkat' => 'required|date|after_or_equal:today|before_or_equal:' . now()->addYear()->format('Y-m-d'),
             'jumlah_orang' => 'required|integer|min:1',
             'lokasi_jemput_id' => 'required|exists:lokasi_jemputs,id',

@@ -12,7 +12,7 @@ class JipController extends Controller
      */
     public function index()
     {
-        $jips = Jip::orderBy('id', 'desc')->paginate(10);
+        $jips = Jip::with('alokasiJipAktif.antrean.pemesanan')->orderBy('id', 'asc')->paginate(10);
         return view('admin.jip.index', compact('jips'));
     }
 
@@ -33,7 +33,7 @@ class JipController extends Controller
             'plat_nomor' => 'required|unique:jips',
             'kapasitas' => 'required|integer|min:1',
             'driver' => 'nullable|string',
-            'status' => 'required|in:tersedia,tidak tersedia,digunakan',
+            'status' => 'required|in:tersedia,tidak tersedia',
         ]);
 
         Jip::create($data);
@@ -69,10 +69,10 @@ class JipController extends Controller
             'plat_nomor' => 'required|unique:jips,plat_nomor,' . $id,
             'kapasitas' => 'required|integer|min:1',
             'driver' => 'nullable|string',
-            'status' => 'required|in:tersedia,tidak tersedia,digunakan',
+            'status' => 'required|in:tersedia,tidak tersedia',
         ]);
 
-        $jip->update($request->all());
+        $jip->update($request->only(['plat_nomor', 'kapasitas', 'driver', 'status']));
 
         return redirect()->route('admin.jip.index')->with('success', 'Data jip berhasil diperbarui');
     }

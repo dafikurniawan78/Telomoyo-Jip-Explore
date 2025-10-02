@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('alokasi_jips', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
+            $table->foreignId('antrean_id')->constrained('antreans')->onDelete('cascade');
             $table->foreignId('jip_id')->constrained('jips')->onDelete('cascade');
-            $table->timestamp('waktu_mulai')->nullable();
-            $table->timestamp('waktu_selesai')->nullable();
+            $table->timestamp('waktu_mulai')->nullable()->index();
+            $table->timestamp('waktu_selesai')->nullable()->index();
             $table->timestamps();
-            $table->unique(['pemesanan_id', 'jip_id']);
+            $table->unique(['antrean_id', 'jip_id']);
         });
     }
 

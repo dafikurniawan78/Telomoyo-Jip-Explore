@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AlokasiJip;
+use App\Models\Antrean;
 use Illuminate\Http\Request;
 
 class AlokasiJipController extends Controller
@@ -12,9 +12,13 @@ class AlokasiJipController extends Controller
      */
     public function index()
     {
-        $alokasis = AlokasiJip::with(['antrean.pemesanan.paketWisata', 'antrean.pemesanan.lokasiJemput', 'jip'])->orderBy('waktu_mulai', 'desc')->paginate(10);
+        $antreans = Antrean::with([
+            'pemesanan.paketWisata',
+            'pemesanan.lokasiJemput',
+            'alokasiJip.jip'
+        ])->orderBy('nomor_antrean', 'asc')->paginate(10);
 
-        return view('admin.alokasi.index', compact('alokasis'));
+        return view('admin.alokasi.index', compact('antreans'));
     }
 
     /**
