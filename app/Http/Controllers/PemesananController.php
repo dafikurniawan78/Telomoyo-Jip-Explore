@@ -28,14 +28,13 @@ class PemesananController extends Controller
         return view('admin.pemesanan.detail', compact('pemesanan'));
     }
 
-    public function updateStatus(Request $request, $id)
+    public function updateStatus(Request $request, Pemesanan $pemesanan)
     {
         $request->validate([
             'status' => 'required|in:pending,disetujui,ditolak'
         ]);
 
-        $pemesanan = Pemesanan::findOrFail($id);
-
+        //Update status pemesanan
         $pemesanan->update([
             'status' => $request->status,
             'approved_by' => Auth::id(),
@@ -43,42 +42,16 @@ class PemesananController extends Controller
 
         if ($request->status === 'disetujui') {
             $antrean = $pemesanan->antrean;
+
             if (!$antrean) {
                 $lastNumber = Antrean::max('nomor_antrean') ?? 0;
-                $antrean = Antrean::create([
+
+                Antrean::create([
                     'pemesanan_id' => $pemesanan->id,
                     'nomor_antrean' => $lastNumber + 1,
                     'status' => 'menunggu',
                 ]);
             }
-
-            $jumlah_jip = $pemesanan->jumlah_jip;
-            $jips = Jip::where('status', 'tersedia')->take($jumlah_jip)->get();
-
-            if ($jips->count() < $jumlah_jip) {
-                return redirect()->back()->with('error', 'Jip tersedia tidak cukup untuk pemesanan ini.');
-            }
-
-            $durasi = $pemesanan->paketWisata->durasi ?? 2;
-            $mulai = now();
-            $selesai = now()->addHours($durasi);
-
-            foreach ($jips as $jip) {
-                AlokasiJip::create([
-                    'antrean_id' => $antrean->id,
-                    'jip_id' => $jip->id,
-                    'waktu_mulai' => $mulai,
-                    'waktu_selesai' => $selesai,
-                ]);
-
-                $jip->update(['status' => 'digunakan']);
-            }
-
-            $antrean->update([
-                'status' => 'sedang dilayani',
-                'waktu_mulai' => $mulai,
-                'waktu_selesai' => $selesai,
-            ]);
         }
 
         return redirect()->route('admin.pemesanan.index')->with('success', 'Status pemesanan berhasil diperbarui.');

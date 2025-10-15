@@ -55,8 +55,86 @@
                                 <td>{{ $antrean->pemesanan->jumlah_orang }} org</td>
                                 <td>{{ $antrean->pemesanan->jumlah_jip }}</td>
                                 <td>{{ $antrean->pemesanan->lokasiJemput->nama_lokasi ?? '-' }}</td>
-                                <td>
-                                    {{ $antrean->alokasiJip->pluck('jip.plat_nomor')->join(', ') }}
+                                <td class="text-center">
+                                    <button type="button"
+                                        class="btn btn-sm {{ $antrean->alokasiJip->count() > 0 ? 'btn-success' : 'btn-outline-secondary' }}"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalJip{{ $antrean->id }}">
+                                        <i class="fas fa-car me-1"></i> Detail Jip
+                                    </button>
+
+                                    {{-- Modal Detail Jip --}}
+                                    <div class="modal fade" id="modalJip{{ $antrean->id }}" tabindex="-1" aria-labelledby="modalLabel{{ $antrean->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content border-0 shadow-lg rounded-3 overflow-hidden">
+
+                                                {{-- Header --}}
+                                                <div class="modal-header text-white" style="background: linear-gradient(90deg, #198754, #20c997);">
+                                                    <h5 class="modal-title fw-semibold" id="modalLabel{{ $antrean->id }}">
+                                                        <i class="fas fa-user me-2 text-warning"></i>
+                                                        {{ $antrean->pemesanan->nama ?? 'Nama tidak diketahui' }}
+                                                    </h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+
+                                                {{-- Body --}}
+                                                <div class="modal-body bg-light">
+                                                    <div class="mb-3 text-center">
+                                                        <h6 class="fw-bold text-success mb-1">
+                                                            Paket Wisata:
+                                                            <span class="text-dark">{{ $antrean->pemesanan->paketWisata->nama_paket ?? '-' }}</span>
+                                                        </h6>
+                                                        <small class="text-muted">
+                                                            <i class="fas fa-map-marker-alt me-1 text-danger"></i>
+                                                            Lokasi Penjemputan:
+                                                            <span class="fw-medium text-dark">{{ $antrean->pemesanan->lokasiJemput->nama_lokasi ?? '-' }}</span>
+                                                        </small>
+                                                    </div>
+
+                                                    @if ($antrean->alokasiJip->count() > 0)
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover align-middle table-bordered">
+                                                                <thead class="table-success">
+                                                                    <tr>
+                                                                        <th>No</th>
+                                                                        <th>Plat Nomor</th>
+                                                                        <th>Driver</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($antrean->alokasiJip as $index => $alokasi)
+                                                                        <tr>
+                                                                            <td class="text-center">{{ $index + 1 }}</td>
+                                                                            <td>
+                                                                                <i class="fas fa-car text-success me-2"></i>
+                                                                                <strong>{{ $alokasi->jip->plat_nomor ?? '-' }}</strong>
+                                                                            </td>
+                                                                            <td>
+                                                                                <i class="fas fa-user text-secondary me-1"></i>
+                                                                                {{ $alokasi->jip->driver ?? 'Tanpa driver' }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    @else
+                                                        <div class="text-center text-muted py-3">
+                                                            <i class="fas fa-info-circle fa-2x mb-2 text-secondary"></i>
+                                                            <p class="mb-0">Belum ada jip yang dialokasikan.</p>
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                {{-- Footer --}}
+                                                <div class="modal-footer bg-success bg-opacity-10">
+                                                    <button type="button" class="btn btn-outline-success btn-sm rounded-pill" data-bs-dismiss="modal">
+                                                        <i class="fas fa-times me-1"></i> Tutup
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
                                     {{ $antrean->alokasiJip->first()?->waktu_mulai?->format('H:i d-m-Y') ?? '-' }}

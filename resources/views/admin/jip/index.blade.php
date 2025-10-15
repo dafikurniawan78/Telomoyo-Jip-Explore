@@ -45,7 +45,7 @@
                             <th>Kapasitas</th>
                             <th>Driver</th>
                             <th>Status</th>
-                            <th>Sedang Dipakai Untuk</th>
+                            <th>Sedang Dipakai Untuk Pemesanan</th>
                             <th style="width: 150px;">Aksi</th>
                         </tr>
                     </thead>
@@ -73,7 +73,7 @@
                                         </span>
                                     @else
                                         <span class="badge bg-secondary">
-                                            <i class="fas fa-times-circle me-1"></i> Tidak Aktif
+                                            <i class="fas fa-times-circle me-1"></i> Tidak Tersedia
                                         </span>
                                     @endif
                                 </td>

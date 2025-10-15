@@ -10,6 +10,7 @@ use App\Http\Controllers\PaketWisataController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\LokasiJemputController;
 use App\Http\Controllers\JipController;
+use App\Services\FCFSService;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -28,12 +29,21 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/proses-fcfs', function (FCFSService $fcfs) {
+    return $fcfs->prosesAntrean();
+});
+
+Route::get('/update-status-otomatis', function (FCFSService $fcfsService) {
+    return $fcfsService->updateAntreanSelesaiOtomatis();
+});
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/admin/pemesanan', [PemesananController::class, 'index'])->name('admin.pemesanan.index');
     Route::get('/admin/pemesanan/{id}', [PemesananController::class, 'detail'])->name('admin.pemesanan.detail');
-    Route::put('/admin/pemesanan/{id}/status', [PemesananController::class, 'updateStatus'])->name('admin.pemesanan.updateStatus');
+    Route::put('/admin/pemesanan/{pemesanan}/status', [PemesananController::class, 'updateStatus'])->name('admin.pemesanan.updateStatus');
     Route::delete('/admin/pemesanan/{id}', [PemesananController::class, 'destroy'])->name('admin.pemesanan.destroy');
 
     Route::get('/admin/antrean', [AntreanController::class, 'index'])->name('admin.antrean.index');

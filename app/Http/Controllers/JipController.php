@@ -33,7 +33,7 @@ class JipController extends Controller
             'plat_nomor' => 'required|unique:jips',
             'kapasitas' => 'required|integer|min:1',
             'driver' => 'nullable|string',
-            'status' => 'required|in:tersedia,tidak tersedia',
+            'status' => 'required|in:tersedia,digunakan,tidak tersedia',
         ]);
 
         Jip::create($data);
@@ -69,7 +69,7 @@ class JipController extends Controller
             'plat_nomor' => 'required|unique:jips,plat_nomor,' . $id,
             'kapasitas' => 'required|integer|min:1',
             'driver' => 'nullable|string',
-            'status' => 'required|in:tersedia,tidak tersedia',
+            'status' => 'required|in:tersedia,digunakan,tidak tersedia',
         ]);
 
         $jip->update($request->only(['plat_nomor', 'kapasitas', 'driver', 'status']));

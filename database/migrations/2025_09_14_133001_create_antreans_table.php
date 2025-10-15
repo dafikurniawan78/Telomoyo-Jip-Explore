@@ -18,6 +18,11 @@ return new class extends Migration
             $table->enum('status', ['menunggu', 'sedang dilayani', 'selesai'])->default('menunggu')->index();
             $table->timestamp('waktu_mulai')->nullable()->index();
             $table->timestamp('waktu_selesai')->nullable()->index();
+
+            //Tambahan kolom untuk perhitungan algoritma FCSF
+            $table->integer('waiting_time')->nullable();
+            $table->integer('turnaround_time')->nullable();
+
             $table->timestamps();
         });
     }
