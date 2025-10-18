@@ -17,9 +17,13 @@
     <!-- Clockpicker -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.css">
 
+    <link rel="stylesheet" href="{{ asset('css/navbarstyle.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/footerstyle.css') }}">
+
     <title>@yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+
 </head>
 <body>
     @include('partials.navbar')

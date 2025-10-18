@@ -6,3 +6,81 @@
     transform: translateY(-6px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
+
+@media (max-width: 767.98px) {
+    #paketCarousel .card {
+        width: 90%;
+        margin: 0 auto;
+        border-radius: 1.2rem;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #paketCarousel .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    #paketCarousel .carousel-inner {
+        padding-bottom: 0.5rem;
+    }
+
+    #paketCarousel .card-img-top {
+        height: 180px;
+        object-fit: cover;
+        border-bottom: 3px solid #dc3545;
+    }
+
+    #paketCarousel .card-body {
+        padding: 0.75rem 1rem;
+    }
+
+    #paketCarousel .card-body h5 {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    #paketCarousel .card-body p {
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    #paketCarousel .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        border-radius: 0.5rem;
+    }
+
+    #paketCarousel .carousel-control-prev-icon,
+    #paketCarousel .carousel-control-next-icon {
+        background-color: #dc3545;
+        background-size: 60% 60%;
+        border-radius: 50%;
+        padding: 0.8rem;
+        filter: brightness(100%);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    #paketCarousel .carousel-control-prev-icon:hover,
+    #paketCarousel .carousel-control-next-icon:hover {
+        background-color: #b02a37;
+    }
+
+    #paketCarousel .carousel-control-prev,
+    #paketCarousel .carousel-control-next {
+        top: 50%;
+        transform: translateY(-50%);
+        width: auto;
+        height: auto;
+        opacity: 0.95;
+    }
+
+    #paketCarousel .carousel-control-prev {
+        left: -3px;
+    }
+
+    #paketCarousel .carousel-control-next {
+        right: -3px;
+    }
+}

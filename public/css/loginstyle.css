@@ -1,30 +1,30 @@
 :root {
-        --primary: #e8591c; /* Oranye */
-        --danger: #bb2d3b;   /* Merah gelap */
-        --secondary: #ffc107; /* Kuning */
-    }
+    --primary: #e8591c; /* Oranye */
+    --danger: #bb2d3b;   /* Merah gelap */
+    --secondary: #ffc107; /* Kuning */
+}
 
-    body, html {
-        height: 100%;
-        margin: 0;
-    }
+body, html {
+    height: 100%;
+    margin: 0;
+}
 
-    .login-bg {
-        min-height: 100vh;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, var(--primary), var(--danger));
-        animation: breathing 6s ease-in-out infinite;
-    }
+.login-bg {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary), var(--danger));
+    animation: breathing 6s ease-in-out infinite;
+    padding: 1rem;
+}
 
-    /* Styling untuk checkbox agar lebih jelas */
 .styled-checkbox {
     width: 18px;
     height: 18px;
-    border: 2px solid #444648; /* biru biar jelas */
-    border-radius: 4px; /* agak rounded */
+    border: 2px solid #444648;
+    border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -36,15 +36,60 @@
 }
 
 
-    @keyframes breathing {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.95; }
+@keyframes breathing {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.95; }
+}
+
+.fade-in-card {
+    animation: fadeInUp 0.8s ease-out;
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 100% !important;
+        padding: 1.5rem !important;
+        border-radius: 16px !important;
     }
 
-    .fade-in-card {
-        animation: fadeInUp 0.8s ease-out;
+    .card-body img{
+        width: 100px !important;
     }
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
+
+    .card-body h3 {
+        font-size: 1.25rem !important;
     }
+
+    form .form-control {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.75rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.7rem;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .login-bg {
+        padding: 0.5 rem;
+    }
+
+    .card {
+        padding: 1rem !important;
+    }
+
+    .card-body h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .card-body p {
+        font-size: 0.85rem;
+    }
+}

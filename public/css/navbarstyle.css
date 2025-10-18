@@ -1,0 +1,176 @@
+/* ===== NAVBAR ===== */
+.custom-navbar {
+    background-color: transparent;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.navbar-brand:hover {
+    color: #ffcc00 !important;
+}
+
+.logo-tje {
+    width: 52px;
+    height: auto;
+    transition: width 0.3s ease;
+}
+
+.navbar-toggler {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+}
+
+.navbar-toggler span {
+    display: block;
+    width: 26px;
+    height: 3px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.navbar-toggler.active span:nth-child(2) {
+    opacity: 0;
+}
+.navbar-toggler.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ===== RESPONSIVE NAVBAR ===== */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+        width: 90vw;
+        max-width: 230px;
+        min-width: 170px;
+        height: 100vh;
+        background: rgba(34, 34, 34, 0.95);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        padding: 4rem 1.5rem;
+        transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), box-shadow 0.5s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        border-left: 2px solid rgba(255, 255, 255, 0.1);
+        z-index: 1050;
+        backdrop-filter: blur(3px);
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+    }
+
+    .navbar-collapse.show-sidebar ul.navbar-nav {
+        margin-left: 0 !important;
+        padding-left: 0;
+    }
+
+    .navbar-collapse.show-sidebar {
+        transform: translateX(0);
+    }
+
+    .navbar-collapse .nav-link {
+        position: relative;
+        color: #ffffff !important;
+        transition: color 0.3s ease;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        text-align: left;
+    }
+
+    .navbar-collapse .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        height: 3px;
+        background-color: #ffcc00;
+        border-radius: 2px;
+        transition: width 0.3s ease;
+    }
+
+    .navbar-collapse .nav-link:hover::after {
+        width: 100%;
+    }
+
+    .nav-item {
+        margin: 1rem 0;
+    }
+
+    .nav-link {
+        padding: 1rem 0;
+        font-size: 1.15rem;
+    }
+
+    .navbar-collapse .nav-link:hover {
+        color: #ffcc00;
+    }
+
+    .navbar-toggler span {
+        background-color: #ffffff;
+    }
+
+    .logo-tje {
+        width: 40px !important;
+    }
+
+    .brand-text {
+        font-size: 0.85rem;
+        line-height: 1.2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navbar-brand {
+        max-width: 70%;
+    }
+
+    .navbar-toggler {
+        margin-left: auto;
+    }
+
+    .close-sidebar {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #df5c5c;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1100;
+        line-height: 1;
+        padding: 0.2rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .close-sidebar:hover {
+        color: #ffcc00;
+        transform: rotate(90deg) scale(1.2);
+    }
+}
