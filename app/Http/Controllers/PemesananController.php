@@ -16,10 +16,19 @@ use Illuminate\Support\Facades\Storage;
 
 class PemesananController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pemesanans = Pemesanan::with(['paketWisata', 'lokasiJemput'])->latest()->paginate(10);
-        return view('admin.pemesanan.index', compact('pemesanans'));
+        $status = $request->get('status');
+
+        $query = Pemesanan::with(['paketWisata', 'lokasiJemput'])->latest();
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $pemesanans = $query->paginate(10);
+
+        return view('admin.pemesanan.index', compact('pemesanans', 'status'));
     }
 
     public function detail($id)

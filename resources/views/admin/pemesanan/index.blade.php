@@ -6,9 +6,10 @@
 <div class="container-fluid">
     <h2 class="mb-3 fw-bold">Kelola Pemesanan</h2>
 
-    {{-- Breadcrumb --}}
-    <div class="bg-light rounded-3 shadow-sm p-3 mb-4">
-        <nav aria-label="breadcrumb">
+    {{-- Breadcrumb + Filter --}}
+    <div class="bg-light rounded-3 shadow-sm p-3 mb-4 d-flex justify-content-between align-items-center flex-wrap">
+        {{-- Breadcrumb kiri --}}
+        <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
             <ol class="breadcrumb mb-0 p-2">
                 <li class="breadcrumb-item">
                     <a href="{{ route('admin.dashboard') }}" class="text-muted fw-medium text-decoration-none">
@@ -24,6 +25,16 @@
                 </li>
             </ol>
         </nav>
+
+        {{-- Filter kanan --}}
+        <div>
+            <select id="filterStatus" class="form-select d-inline-block" style="width: 200px;">
+                <option value="">Semua Status</option>
+                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                <option value="disetujui" {{ request('status') == 'disetujui' ? 'selected' : '' }}>Disetujui</option>
+                <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+            </select>
+        </div>
     </div>
 
     {{-- Tabel Data --}}
@@ -145,4 +156,20 @@
         {{ $pemesanans->links() }}
     </div>
 </div>
+@push('scripts')
+<script>
+    document.getElementById('filterStatus').addEventListener('change', function() {
+        const status = this.value;
+        const url = new URL(window.location.href);
+
+        if (status) {
+            url.searchParams.set('status', status);
+        } else {
+            url.searchParams.delete('status'); // jika pilih "Semua", hapus query
+        }
+
+        window.location.href = url.toString(); // reload halaman dengan filter baru
+    });
+</script>
+@endpush
 @endsection
