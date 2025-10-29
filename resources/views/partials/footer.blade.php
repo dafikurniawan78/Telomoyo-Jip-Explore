@@ -10,9 +10,9 @@
             <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4 footer-nav">
                 <h6 class="text-uppercase mb-4">Navigasi</h6>
                 <p><a href="/" class="text-white">Beranda</a></p>
-                <p><a href="/paket" class="text-white">Paket</a></p>
-                <p><a href="/reservasi" class="text-white">Reservasi</a></p>
-                <p><a href="/kontak" class="text-white">Kontak</a></p>
+                <p><a href="/paket" class="text-white">Paket Wisata</a></p>
+                <p><a href="#tentang" class="text-white">Tentang Kami</a></p>
+                <p><a href="#kontak" class="text-white">Kontak</a></p>
             </div>
 
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-4 footer-contact">

@@ -49,7 +49,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/antrean', [AntreanController::class, 'index'])->name('admin.antrean.index');
     Route::post('/admin/antrean/store/{pemesananId}', [AntreanController::class, 'storeFromPemesanan'])->name('admin.antrean.storeFromPemesanan');
     Route::put('/admin/antrean/{id}/status', [AntreanController::class, 'updateStatus'])->name('admin.antrean.updateStatus');
-    Route::delete('/admin/antrean/{id}', [AntreanController::class, 'destroy'])->name('admin.antrean.destroy');
     Route::put('/admin/antrean/{id}/layani', [AntreanController::class, 'layani'])->name('admin.antrean.layani');
     Route::put('/admin/antrean/{id}/selesai', [AntreanController::class, 'selesai'])->name('admin.antrean.selesai');
 

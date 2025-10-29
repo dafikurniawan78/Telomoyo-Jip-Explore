@@ -8,10 +8,26 @@ use Illuminate\Http\Request;
 
 class AntreanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $antreans = Antrean::with('pemesanan')->orderBy('nomor_antrean', 'asc')->paginate(10);
-        return view('admin.antrean.index', compact('antreans'));
+        $tanggalFilter = $request->get('tanggal');
+        $customDate = $request->get('custom_date');
+
+        $query = Antrean::with(['pemesanan.paketWisata'])->orderBy('nomor_antrean', 'asc');
+
+        if ($tanggalFilter === 'today') {
+            $query->whereHas('pemesanan', function ($q) {
+                $q->whereDate('tanggal_berangkat', now()->toDateString());
+            });
+        } elseif ($tanggalFilter === 'custom' && $customDate) {
+            $query->whereHas('pemesanan', function ($q) use ($customDate) {
+                $q->whereDate('tanggal_berangkat', $customDate);
+            });
+        }
+
+        $antreans = $query->paginate(10);
+
+        return view('admin.antrean.index', compact('antreans', 'tanggalFilter', 'customDate'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -29,20 +45,5 @@ class AntreanController extends Controller
         ]);
 
         return redirect()->route('admin.antrean.index')->with('success', 'Status antrean diperbarui');
-    }
-
-    public function destroy($id)
-    {
-        $antrean = Antrean::findOrFail($id);
-
-        $alokasi = AlokasiJip::with('jip')->where('antrean_id', $antrean->id)->first();
-        if ($alokasi) {
-            $alokasi->jip->update(['status' => 'tersedia']);
-            $alokasi->delete();
-        }
-
-        $antrean->delete();
-
-        return redirect()->route('admin.antrean.index')->with('success', 'Antrean berhasil dihapus');
     }
 }
