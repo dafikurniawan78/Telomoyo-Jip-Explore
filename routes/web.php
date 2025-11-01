@@ -18,6 +18,10 @@ use App\Services\FCFSService;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/paket', [BerandaController::class, 'paket'])->name('paket');
+Route::get('/kontak', function () {
+    return view('pages.kontak');
+})->name('kontak');
+
 
 Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
 Route::get('/pemesanan/create/{id}', [PemesananController::class, 'create'])->name('pemesanan.create');
