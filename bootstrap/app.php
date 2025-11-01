@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Services\FCFSService;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,6 +19,12 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withSchedule(function (Schedule $schedule) {
-        //
+        $schedule->call(function () {
+            $fcfs = app(FCFSService::class);
+
+            $fcfs->updateAntreanSelesaiOtomatis();
+            $fcfs->prosesAntrean();
+        })->everyMinute()
+            ->appendOutputTo(storage_path('logs/fcfs.log'));
     })
     ->create();

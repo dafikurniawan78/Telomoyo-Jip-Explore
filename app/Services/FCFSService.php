@@ -23,9 +23,11 @@ class FCFSService
                 $today = $now->toDateString();
 
                 // Ambil antrean menunggu paling awal untuk hari ini
-                $antrean = Antrean::where('status', 'menunggu')
-                    ->whereHas('pemesanan', fn($q) => $q->whereDate('tanggal_berangkat', $today))
-                    ->orderBy('nomor_antrean', 'asc')
+                $antrean = Antrean::join('pemesanans', 'antreans.pemesanan_id', '=', 'pemesanans.id')
+                    ->where('antreans.status', 'menunggu')
+                    ->whereDate('pemesanans.tanggal_berangkat', $today)
+                    ->orderBy('pemesanans.created_at', 'asc')
+                    ->select('antreans.*')
                     ->first();
 
                 if (!$antrean) {
@@ -108,7 +110,6 @@ class FCFSService
 
             return "Proses alokasi antrean FCFS selesai.";
         } catch (\Exception $e) {
-            DB::rollBack();
             Log::error('Kesalahan FCFSService: ' . $e->getMessage());
             return 'Terjadi kesalahan: ' . $e->getMessage();
         }
@@ -146,7 +147,6 @@ class FCFSService
             DB::commit();
             return 'Status antrean selesai diperbarui otomatis.';
         } catch (\Exception $e) {
-            DB::rollBack();
             Log::error('Kesalahan updateAntreanSelesaiOtomatis: ' . $e->getMessage());
             return 'Terjadi kesalahan: ' . $e->getMessage();
         }

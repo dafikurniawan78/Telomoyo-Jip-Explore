@@ -8,7 +8,7 @@
 
     {{-- Breadcrumb + Filter --}}
     <div class="bg-light rounded-3 shadow-sm p-3 mb-4 d-flex justify-content-between align-items-center flex-wrap">
-        {{-- Breadcrumb kiri --}}
+        {{-- Breadcrumb --}}
         <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
             <ol class="breadcrumb mb-0 p-2">
                 <li class="breadcrumb-item">
@@ -26,7 +26,7 @@
             </ol>
         </nav>
 
-        {{-- Filter kanan --}}
+        {{-- Filter --}}
         <div>
             <select id="filterStatus" class="form-select d-inline-block" style="width: 200px;">
                 <option value="">Semua Status</option>
@@ -35,6 +35,13 @@
                 <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
             </select>
         </div>
+    </div>
+
+    {{-- Tombol Tambah --}}
+    <div class="mb-3">
+        <a href="{{ route('admin.pemesanan.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus-circle me-1"></i> Pesan
+        </a>
     </div>
 
     {{-- Tabel Data --}}
@@ -165,10 +172,10 @@
         if (status) {
             url.searchParams.set('status', status);
         } else {
-            url.searchParams.delete('status'); // jika pilih "Semua", hapus query
+            url.searchParams.delete('status')
         }
 
-        window.location.href = url.toString(); // reload halaman dengan filter baru
+        window.location.href = url.toString();
     });
 </script>
 @endpush

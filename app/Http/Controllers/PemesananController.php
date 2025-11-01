@@ -10,9 +10,11 @@ use App\Models\Pemesanan;
 use App\Models\Jip;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Storage;
 
 class PemesananController extends Controller
 {
@@ -43,25 +45,42 @@ class PemesananController extends Controller
             'status' => 'required|in:pending,disetujui,ditolak'
         ]);
 
-        //Update status pemesanan
-        $pemesanan->update([
-            'status' => $request->status,
-            'approved_by' => Auth::id(),
-        ]);
+        DB::transaction(function () use ($request, $pemesanan) {
 
-        if ($request->status === 'disetujui') {
-            $antrean = $pemesanan->antrean;
+            //Update status pemesanan
+            $pemesanan->update([
+                'status' => $request->status,
+                'approved_by' => Auth::id(),
+            ]);
 
-            if (!$antrean) {
-                $lastNumber = Antrean::max('nomor_antrean') ?? 0;
+            if ($request->status === 'disetujui') {
+                $antrean = $pemesanan->antrean;
 
-                Antrean::create([
-                    'pemesanan_id' => $pemesanan->id,
-                    'nomor_antrean' => $lastNumber + 1,
-                    'status' => 'menunggu',
-                ]);
+                if (!$antrean) {
+                    $tanggal = Carbon::parse($pemesanan->tanggal_berangkat)->format('ymd');
+
+                    $pemesanansTanggalIni = Pemesanan::whereDate('tanggal_berangkat', $pemesanan->tanggal_berangkat)
+                        ->orderBy('created_at', 'asc')
+                        ->lockForUpdate()
+                        ->get();
+
+                    $urutan = 1;
+                    foreach ($pemesanansTanggalIni as $p) {
+                        if ($p->antrean) continue;
+                        if ($p->id === $pemesanan->id) break;
+                        $urutan++;
+                    }
+
+                    $nomorAntrean = $tanggal . str_pad($urutan, 3, '0', STR_PAD_LEFT);
+
+                    Antrean::create([
+                        'pemesanan_id' => $pemesanan->id,
+                        'nomor_antrean' => $nomorAntrean,
+                        'status' => 'menunggu',
+                    ]);
+                }
             }
-        }
+        });
 
         return redirect()->route('admin.pemesanan.index')->with('success', 'Status pemesanan berhasil diperbarui.');
     }
@@ -142,8 +161,70 @@ class PemesananController extends Controller
         $customPaper = [0, 0, $width, $height];
 
         $pdf = Pdf::loadView('pdf.tiket', compact('pemesanan'))
-            ->setPaper($customPaper, 'portrait'); // gunakan portrait
+            ->setPaper($customPaper, 'portrait');
 
         return $pdf->download('Tiket-Pemesanan-' . $pemesanan->id . '.pdf');
+    }
+
+    public function createAdmin()
+    {
+        $pakets = PaketWisata::all();
+        $lokasi_jemputs = LokasiJemput::all();
+
+        return view('admin.pemesanan.create', compact('pakets', 'lokasi_jemputs'));
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'telepon' => 'nullable|string|max:15',
+            'tanggal_berangkat' => 'required|date|after_or_equal:today',
+            'jumlah_orang' => 'required|integer|min:1',
+            'lokasi_jemput_id' => 'required|exists:lokasi_jemputs,id',
+            'paket_id' => 'required|exists:paket_wisatas,id',
+            'jam_berangkat' => 'required',
+            'total' => 'required|numeric',
+            'bukti_pembayaran' => 'nullable|image|max:2048',
+        ]);
+
+        $data = $request->all();
+        $data['telepon'] = $request->telepon ?? '-';
+        $data['jumlah_jip'] = ceil($request->jumlah_orang / 4);
+        $data['status'] = 'disetujui';
+        $data['approved_by'] = Auth::id();
+
+        if ($request->hasFile('bukti_pembayaran')) {
+            $data['bukti_pembayaran'] = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
+        }
+
+        DB::transaction(function () use ($data) {
+
+            $pemesanan = Pemesanan::create($data);
+
+            $tanggal = Carbon::parse($pemesanan->tanggal_berangkat)->format('ymd');
+
+            $pemesanansTanggalIni = Pemesanan::whereDate('tanggal_berangkat', $pemesanan->tanggal_berangkat)
+                ->orderBy('created_at', 'asc')
+                ->lockForUpdate()
+                ->get();
+
+            $urutan = 1;
+            foreach ($pemesanansTanggalIni as $p) {
+                if ($p->antrean) continue;
+                if ($p->id === $pemesanan->id) break;
+                $urutan++;
+            }
+
+            $nomorAntrean = $tanggal . str_pad($urutan, 3, '0', STR_PAD_LEFT);
+
+            Antrean::create([
+                'pemesanan_id' => $pemesanan->id,
+                'nomor_antrean' => $nomorAntrean,
+                'status' => 'menunggu',
+            ]);
+        });
+
+        return redirect()->route('admin.pemesanan.index')->with('success', 'Pemesanan berhasil ditambahkan.');
     }
 }

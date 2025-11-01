@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('jam_berangkat');
             $table->bigInteger('total');
             $table->string('status')->default('pending');
-            $table->string('bukti_pembayaran');
+            $table->string('bukti_pembayaran')->nullable();
             $table->timestamps();
         });
     }

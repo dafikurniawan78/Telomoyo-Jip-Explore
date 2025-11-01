@@ -37,11 +37,12 @@ Route::get('/update-status-otomatis', function (FCFSService $fcfsService) {
     return $fcfsService->updateAntreanSelesaiOtomatis();
 });
 
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/admin/pemesanan', [PemesananController::class, 'index'])->name('admin.pemesanan.index');
+    Route::get('/admin/pemesanan/create', [PemesananController::class, 'createAdmin'])->name('admin.pemesanan.create');
+    Route::post('/admin/pemesanan/store', [PemesananController::class, 'storeAdmin'])->name('admin.pemesanan.store');
     Route::get('/admin/pemesanan/{id}', [PemesananController::class, 'detail'])->name('admin.pemesanan.detail');
     Route::put('/admin/pemesanan/{pemesanan}/status', [PemesananController::class, 'updateStatus'])->name('admin.pemesanan.updateStatus');
     Route::delete('/admin/pemesanan/{id}', [PemesananController::class, 'destroy'])->name('admin.pemesanan.destroy');
