@@ -8,6 +8,7 @@
     <!-- AdminLTE CSS -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')

@@ -42,6 +42,9 @@ Route::get('/update-status-otomatis', function (FCFSService $fcfsService) {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/register', [AuthController::class, 'showRegisterForm'])->name('admin.register');
+    Route::post('/admin/register', [AuthController::class, 'register'])->name('admin.register.submit');
+
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/admin/pemesanan', [PemesananController::class, 'index'])->name('admin.pemesanan.index');
