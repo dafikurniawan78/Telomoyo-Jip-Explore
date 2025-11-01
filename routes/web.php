@@ -72,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/jip', [JipController::class, 'index'])->name('admin.jip.index');
     Route::get('/admin/jip/create', [JipController::class, 'create'])->name('admin.jip.create');
     Route::post('/admin/jip', [JipController::class, 'store'])->name('admin.jip.store');
+    Route::get('/admin/jip/{id}', [JipController::class, 'show'])->name('admin.jip.show');
     Route::get('/admin/jip/{id}/edit', [JipController::class, 'edit'])->name('admin.jip.edit');
     Route::put('/admin/jip/{id}', [JipController::class, 'update'])->name('admin.jip.update');
     Route::delete('/admin/jip/{id}', [JipController::class, 'destroy'])->name('admin.jip.destroy');

@@ -44,9 +44,36 @@ class JipController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, $id)
     {
-        //
+        $jip = Jip::findOrFail($id);
+
+        // Ambil tanggal dari input (jika tidak ada, default = hari ini)
+        $tanggal = $request->input('tanggal', now('Asia/Jakarta')->toDateString());
+
+        // Query alokasi jip untuk tanggal yang dipilih
+        $query = $jip->alokasiJip()
+            ->with(['antrean.pemesanan.paketWisata'])
+            ->whereDate('waktu_mulai', $tanggal);
+
+        $riwayat = $query->orderBy('waktu_mulai', 'desc')->get();
+
+        // Total semua pemesanan jip ini (seluruh waktu)
+        $totalPemesanan = $jip->alokasiJip()->count();
+
+        // Total pemesanan khusus hari ini
+        $hariIni = now('Asia/Jakarta')->toDateString();
+        $pemesananHariIni = $jip->alokasiJip()
+            ->whereDate('waktu_mulai', $hariIni)
+            ->count();
+
+        return view('admin.jip.show', compact(
+            'jip',
+            'riwayat',
+            'totalPemesanan',
+            'pemesananHariIni',
+            'tanggal'
+        ));
     }
 
     /**

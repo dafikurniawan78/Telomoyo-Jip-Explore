@@ -88,6 +88,9 @@
                                     <a href="{{ route('admin.jip.edit', $jip->id) }}" class="btn btn-sm btn-warning me-1">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    <a href="{{ route('admin.jip.show', $jip->id) }}" class="btn btn-sm btn-secondary me-1">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <form action="{{ route('admin.jip.destroy', $jip->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus data jip ini?')">
                                         @csrf
                                         @method('DELETE')
