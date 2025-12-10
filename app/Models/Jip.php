@@ -18,6 +18,7 @@ class Jip extends Model
         'kapasitas',
         'driver',
         'status',
+        'last_used_at',
     ];
 
     protected $casts = [
@@ -52,7 +53,11 @@ class Jip extends Model
     {
         DB::table('jips')
             ->where('id', $this->id)
-            ->update(['status' => 'tersedia', 'updated_at' => now()]);
+            ->update([
+                'status' => 'tersedia',
+                'updated_at' => now(),
+                'last_used_at' => now(),
+            ]);
 
         $this->refresh();
     }

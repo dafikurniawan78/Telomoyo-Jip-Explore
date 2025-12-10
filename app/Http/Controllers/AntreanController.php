@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AlokasiJip;
 use App\Models\Antrean;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AntreanController extends Controller
 {
@@ -27,6 +27,37 @@ class AntreanController extends Controller
 
         $antreans = $query->paginate(10);
 
+        foreach ($antreans as $antrean) {
+            if ($antrean->pemesanan && $antrean->waktu_mulai && $antrean->waktu_selesai) {
+                $created = Carbon::parse($antrean->pemesanan->created_at);
+                $waktuMulai = Carbon::parse($antrean->waktu_mulai);
+                $waktuSelesai = Carbon::parse($antrean->waktu_selesai);
+
+                // Hitung waktu tunggu & turnaround
+                $waitingTime = round($created->diffInMinutes($waktuMulai));
+                $turnaroundTime = round($created->diffInMinutes($waktuSelesai));
+
+                $hour = $waktuMulai->hour;
+                if ($hour >= 4 && $hour < 11) {
+                    $sesi = 'Pagi';
+                } elseif ($hour >= 11 && $hour < 14) {
+                    $sesi = 'Siang';
+                } elseif ($hour >= 14 && $hour <= 16) {
+                    $sesi = 'Sore';
+                } else {
+                    $sesi = 'Di luar jam operasional';
+                }
+
+                $antrean->setAttribute('waiting_time', $waitingTime);
+                $antrean->setAttribute('turnaround_time', $turnaroundTime);
+                $antrean->setAttribute('sesi_waktu', $sesi);
+            } else {
+                $antrean->setAttribute('waiting_time', null);
+                $antrean->setAttribute('turnaround_time', null);
+                $antrean->setAttribute('sesi_waktu', null);
+            }
+        }
+
         return view('admin.antrean.index', compact('antreans', 'tanggalFilter', 'customDate'));
     }
 
@@ -36,14 +67,31 @@ class AntreanController extends Controller
             'status' => 'required|in:menunggu,sedang dilayani,selesai',
         ]);
 
-        $antrean = Antrean::findOrFail($id);
+        $antrean = Antrean::with('pemesanan')->findOrFail($id);
+        $statusLama = $antrean->status;
+        $statusBaru = $request->status;
 
-        $antrean->update([
-            'status' => $request->status,
-            'waktu_mulai' => $request->status == 'sedang dilayani' ? now() : $antrean->waktu_mulai,
-            'waktu_selesai' => $request->status == 'selesai' ? now() : $antrean->waktu_selesai,
-        ]);
+        $antrean->status = $statusBaru;
 
-        return redirect()->route('admin.antrean.index')->with('success', 'Status antrean diperbarui');
+        // Jika status berubah jadi "selesai"
+        if ($statusBaru === 'selesai' && $statusLama !== 'selesai') {
+            $waktuMulai = $antrean->waktu_mulai ?? now();
+            $waktuSelesai = now();
+
+            $antrean->waktu_selesai = $waktuSelesai;
+
+            // Hitung waktu tunggu & total berdasarkan urutan benar
+            $waitingTime = $waktuMulai->diffInMinutes($antrean->pemesanan->created_at);
+            $turnaroundTime = $waktuSelesai->diffInMinutes($antrean->pemesanan->created_at);
+
+            $antrean->waiting_time = $waitingTime;
+            $antrean->turnaround_time = $turnaroundTime;
+        }
+
+        $antrean->save();
+
+        return redirect()
+            ->route('admin.antrean.index')
+            ->with('success', 'Status antrean berhasil diperbarui.');
     }
 }

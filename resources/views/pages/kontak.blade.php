@@ -19,7 +19,6 @@
                         Hubungi kami melalui form di bawah ini atau melalui kontak langsung.
                     </p>
 
-                    {{-- Form Kontak Dummy --}}
                     <form>
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama Lengkap</label>
@@ -41,7 +40,6 @@
                         </div>
                     </form>
 
-                    {{-- Kontak langsung --}}
                     <hr class="my-4">
                     <div class="text-center mb-4">
                         <p><i class="bi bi-telephone-fill"></i> Telepon: <a href="tel:+6282138088118">+62 821-3808-8118</a></p>
@@ -49,7 +47,6 @@
                         <p><i class="bi bi-geo-alt-fill"></i> Alamat: Parkir Telomoyo via Dalangan, Pandean, Kec.Ngablak, Kab.Magelang</p>
                     </div>
 
-                    {{-- Google Maps interaktif --}}
                     <div class="map-responsive">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.1234567890!2d110.215678!3d-7.502345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a1234567890%3A0xabcdef1234567890!2sTelomoyo%20Jip%20Explore!5e0!3m2!1sid!2sid!4v1696181234567!5m2!1sid!2sid"

@@ -12,6 +12,16 @@
 
     <div class="card form-card">
         <div class="card-body p-4 p-md-5">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('pemesanan.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-4">
@@ -57,7 +67,7 @@
                         <div class="mb-3">
                             <label class="form-label">Jam Berangkat</label>
                             <div class="input-group clockpicker">
-                                <input type="text" class="form-control rounded-3" id="jam_berangkat" name="jam_berangkat" placeholder="Pilih jam" readonly>
+                                <input type="time" class="form-control rounded-3" id="jam_berangkat" name="jam_berangkat" placeholder="Pilih jam">
                                 <span class="input-group-text"><i class="bi bi-clock"></i></span>
                             </div>
                         </div>
@@ -72,7 +82,7 @@
                             <small class="text-muted d-block mt-2">
                                 Silakan lakukan pembayaran via transfer ke nomor rekening:<br>
                                 <strong>a/n Telomoyo Jip Explore</strong><br>
-                                <strong>1560007012456</strong><br>
+                                <strong> - </strong><br>
                                 lalu upload bukti transfer di sini.
                             </small>
                         </div>

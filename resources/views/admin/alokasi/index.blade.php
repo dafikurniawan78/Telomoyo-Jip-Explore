@@ -6,9 +6,10 @@
 <div class="container-fluid">
     <h2 class="mb-3 fw-bold">Alokasi Jip</h2>
 
-    {{-- Breadcrumb --}}
-    <div class="bg-light rounded-3 shadow-sm p-3 mb-4">
-        <nav aria-label="breadcrumb">
+    {{-- Breadcrumb + Filter --}}
+    <div class="bg-light rounded-3 shadow-sm p-3 mb-4 d-flex flex-wrap justify-content-between align-items-center">
+        {{-- Breadcrumb --}}
+        <nav aria-label="breadcrumb" class="mb-0">
             <ol class="breadcrumb mb-0 p-2">
                 <li class="breadcrumb-item">
                     <a href="{{ route('admin.dashboard') }}" class="text-muted fw-medium text-decoration-none">
@@ -24,6 +25,23 @@
                 </li>
             </ol>
         </nav>
+
+        {{-- Filter --}}
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <label for="filterTanggal" class="fw-semibold me-2 mb-0">
+                <i class="fas fa-filter me-1"></i> Filter Tanggal:
+            </label>
+
+            <select id="filterTanggal" class="form-select form-select-sm" style="width: 180px;">
+                <option value="">Semua</option>
+                <option value="today" {{ request('tanggal') == 'today' ? 'selected' : '' }}>Hari Ini</option>
+                <option value="custom" {{ request('tanggal') == 'custom' ? 'selected' : '' }}>Pilih Tanggal...</option>
+            </select>
+
+            <input type="date" id="customDate" class="form-control form-control-sm"
+                   style="width: 180px; display: {{ request('tanggal') == 'custom' ? 'block' : 'none' }};"
+                   value="{{ request('custom_date') }}">
+        </div>
     </div>
 
     {{-- Tabel Data Alokasi --}}
@@ -160,3 +178,36 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+<script>
+    const filterTanggal = document.getElementById('filterTanggal');
+    const customDate = document.getElementById('customDate');
+
+    filterTanggal.addEventListener('change', function() {
+        const selected = this.value;
+        const url = new URL(window.location.href);
+
+        if (selected === 'today') {
+            url.searchParams.set('tanggal', 'today');
+            url.searchParams.delete('custom_date');
+            window.location.href = url;
+        } else if (selected === 'custom') {
+            customDate.style.display = 'block';
+        } else {
+            url.searchParams.delete('tanggal');
+            url.searchParams.delete('custom_date');
+            window.location.href = url;
+        }
+    });
+
+    customDate.addEventListener('change', function() {
+        const date = this.value;
+        if (date) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('tanggal', 'custom');
+            url.searchParams.set('custom_date', date);
+            window.location.href = url;
+        }
+    });
+</script>
+@endpush

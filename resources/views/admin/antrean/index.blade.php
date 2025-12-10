@@ -24,7 +24,7 @@
             </ol>
         </nav>
 
-        {{-- Filter Dropdown di Kanan --}}
+        {{-- Filter Dropdown --}}
         <div class="d-flex flex-wrap align-items-center gap-2">
             <label for="filterTanggal" class="fw-semibold me-2 mb-0">
                 <i class="fas fa-filter me-1"></i> Filter Tanggal:
@@ -56,6 +56,9 @@
                             <th>Status</th>
                             <th>Waktu Mulai</th>
                             <th>Waktu Selesai</th>
+                            <th>Sesi Waktu</th>
+                            <th>Waiting Time (menit)</th>
+                            <th>Turnaround (menit)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,6 +79,9 @@
                                 </td>
                                 <td>{{ $antrean->waktu_mulai ? $antrean->waktu_mulai->format('H:i d-m-Y') : '-' }}</td>
                                 <td>{{ $antrean->waktu_selesai ? $antrean->waktu_selesai->format('H:i d-m-Y') : '-' }}</td>
+                                <td>{{ $antrean->sesi_waktu ?? '-' }}</td>
+                                <td>{{ $antrean->waiting_time ?? '-' }}</td>
+                                <td>{{ $antrean->turnaround_time ?? '-' }}</td>
                             </tr>
                         @empty
                             <tr>

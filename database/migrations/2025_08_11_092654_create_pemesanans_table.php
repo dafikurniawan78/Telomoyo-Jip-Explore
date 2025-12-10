@@ -29,7 +29,7 @@ return new class extends Migration
                 ->constrained('paket_wisatas')
                 ->onDelete('cascade');
 
-            $table->string('jam_berangkat');
+            $table->time('jam_berangkat');
             $table->bigInteger('total');
             $table->string('status')->default('pending');
             $table->string('bukti_pembayaran')->nullable();

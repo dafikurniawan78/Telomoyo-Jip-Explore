@@ -10,15 +10,31 @@ class AlokasiJipController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $antreans = Antrean::with([
+        $tanggalFilter = $request->get('tanggal');
+        $customDate = $request->get('custom_date');
+
+        $query = Antrean::with([
             'pemesanan.paketWisata',
             'pemesanan.lokasiJemput',
             'alokasiJip.jip'
-        ])->orderBy('nomor_antrean', 'asc')->paginate(10);
+        ])->orderBy('nomor_antrean', 'asc');
 
-        return view('admin.alokasi.index', compact('antreans'));
+        if ($tanggalFilter === 'today') {
+            $query->whereHas('pemesanan', function ($q) {
+                $q->whereDate('tanggal_berangkat', now()->toDateString());
+            });
+        } elseif ($tanggalFilter === 'custom' && $customDate) {
+            $query->whereHas('pemesanan', function ($q) use ($customDate) {
+                $q->whereDate('tanggal_berangkat', $customDate);
+            });
+        }
+        // jika kosong / semua, tampilkan semua
+
+        $antreans = $query->paginate(10);
+
+        return view('admin.alokasi.index', compact('antreans', 'tanggalFilter', 'customDate'));
     }
 
     /**

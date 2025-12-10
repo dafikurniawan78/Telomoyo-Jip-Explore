@@ -47,38 +47,31 @@ class PemesananController extends Controller
 
         DB::transaction(function () use ($request, $pemesanan) {
 
-            //Update status pemesanan
             $pemesanan->update([
                 'status' => $request->status,
                 'approved_by' => Auth::id(),
             ]);
 
-            if ($request->status === 'disetujui') {
-                $antrean = $pemesanan->antrean;
+            if ($request->status === 'ditolak' && $pemesanan->antrean) {
+                $pemesanan->antrean->delete();
+            }
 
-                if (!$antrean) {
-                    $tanggal = Carbon::parse($pemesanan->tanggal_berangkat)->format('ymd');
+            if ($request->status === 'disetujui' && !$pemesanan->antrean) {
+                [$waktuMulai, $waktuSelesai] = $this->getWaktuMulaiOtomatis($pemesanan);
+                $tanggal = Carbon::parse($pemesanan->tanggal_berangkat)->format('ymd');
+                $lastAntrean = Antrean::where('nomor_antrean', 'like', $tanggal . '%')
+                    ->orderBy('nomor_antrean', 'desc')
+                    ->first();
+                $nextNumber = $lastAntrean ? ((int) substr($lastAntrean->nomor_antrean, -3) + 1) : 1;
+                $nomorAntrean = $tanggal . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
-                    $pemesanansTanggalIni = Pemesanan::whereDate('tanggal_berangkat', $pemesanan->tanggal_berangkat)
-                        ->orderBy('created_at', 'asc')
-                        ->lockForUpdate()
-                        ->get();
-
-                    $urutan = 1;
-                    foreach ($pemesanansTanggalIni as $p) {
-                        if ($p->antrean) continue;
-                        if ($p->id === $pemesanan->id) break;
-                        $urutan++;
-                    }
-
-                    $nomorAntrean = $tanggal . str_pad($urutan, 3, '0', STR_PAD_LEFT);
-
-                    Antrean::create([
-                        'pemesanan_id' => $pemesanan->id,
-                        'nomor_antrean' => $nomorAntrean,
-                        'status' => 'menunggu',
-                    ]);
-                }
+                Antrean::create([
+                    'pemesanan_id' => $pemesanan->id,
+                    'nomor_antrean' => $nomorAntrean,
+                    'status' => 'menunggu',
+                    'waktu_mulai' => $waktuMulai,
+                    'waktu_selesai' => $waktuSelesai,
+                ]);
             }
         });
 
@@ -116,33 +109,57 @@ class PemesananController extends Controller
             'jumlah_orang' => 'required|integer|min:1',
             'lokasi_jemput_id' => 'required|exists:lokasi_jemputs,id',
             'paket_id' => 'required|exists:paket_wisatas,id',
-            'jam_berangkat' => 'required|string',
+            'jam_berangkat' => 'required|date_format:H:i',
             'bukti_pembayaran' => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Hitung jumlah jip ulang berdasarkan jumlah orang
         $jumlah_jip = ceil($request->jumlah_orang / 4);
-
-        // Ambil paket untuk hitung total berdasarkan harga asli
         $paket = PaketWisata::findOrFail($request->paket_id);
         $total = $jumlah_jip * $paket->harga;
 
-        // Simpan data pemesanan
-        $pemesanan = Pemesanan::create([
-            'nama' => $request->nama,
-            'telepon' => $request->telepon,
-            'tanggal_berangkat' => $request->tanggal_berangkat,
-            'jumlah_orang' => $request->jumlah_orang,
-            'jumlah_jip' => $jumlah_jip,
-            'lokasi_jemput_id' => $request->lokasi_jemput_id,
-            'paket_id' => $paket->id,
-            'jam_berangkat' => $request->jam_berangkat,
-            'total' => $total,
-            'status' => 'pending',
-            'bukti_pembayaran' => $request->file('bukti_pembayaran')->store('bukti', 'public'),
-        ]);
+        try {
+            $pemesanan = DB::transaction(function () use ($request, $jumlah_jip, $paket, $total) {
 
-        return redirect()->route('pemesanan.show', $pemesanan->id)->with('success', 'Pemesanan berhasil! Simpan bukti pemesanan Anda.');
+                $pemesanan = Pemesanan::create([
+                    'nama' => $request->nama,
+                    'telepon' => $request->telepon,
+                    'tanggal_berangkat' => $request->tanggal_berangkat,
+                    'jumlah_orang' => $request->jumlah_orang,
+                    'jumlah_jip' => $jumlah_jip,
+                    'lokasi_jemput_id' => $request->lokasi_jemput_id,
+                    'paket_id' => $paket->id,
+                    'jam_berangkat' => $request->jam_berangkat,
+                    'total' => $total,
+                    'status' => 'pending',
+                    'bukti_pembayaran' => $request->file('bukti_pembayaran')->store('bukti', 'public'),
+                ]);
+
+                // Tentukan nomor antrean langsung
+                $tanggal = Carbon::parse($pemesanan->tanggal_berangkat)->format('ymd');
+                $lastAntrean = Antrean::where('nomor_antrean', 'like', $tanggal . '%')
+                    ->orderBy('nomor_antrean', 'desc')
+                    ->first();
+
+                $nextNumber = $lastAntrean ? ((int) substr($lastAntrean->nomor_antrean, -3) + 1) : 1;
+                $nomorAntrean = $tanggal . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
+                [$waktuMulai, $waktuSelesai] = app(self::class)->getWaktuMulaiOtomatis($pemesanan);
+
+                Antrean::create([
+                    'pemesanan_id' => $pemesanan->id,
+                    'nomor_antrean' => $nomorAntrean,
+                    'status' => 'menunggu',
+                    'waktu_mulai' => $waktuMulai,
+                    'waktu_selesai' => $waktuSelesai,
+                ]);
+
+                return $pemesanan;
+            });
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
+        return redirect()->route('pemesanan.show', ['id' => $pemesanan->id])
+            ->with('success', 'Pemesanan berhasil! Simpan bukti pemesanan Anda.');
     }
 
     public function show($id)
@@ -183,7 +200,7 @@ class PemesananController extends Controller
             'jumlah_orang' => 'required|integer|min:1',
             'lokasi_jemput_id' => 'required|exists:lokasi_jemputs,id',
             'paket_id' => 'required|exists:paket_wisatas,id',
-            'jam_berangkat' => 'required',
+            'jam_berangkat' => 'required|date_format:H:i',
             'total' => 'required|numeric',
             'bukti_pembayaran' => 'nullable|image|max:2048',
         ]);
@@ -204,27 +221,79 @@ class PemesananController extends Controller
 
             $tanggal = Carbon::parse($pemesanan->tanggal_berangkat)->format('ymd');
 
-            $pemesanansTanggalIni = Pemesanan::whereDate('tanggal_berangkat', $pemesanan->tanggal_berangkat)
-                ->orderBy('created_at', 'asc')
-                ->lockForUpdate()
-                ->get();
+            // Ambil nomor antrean terakhir berdasarkan tanggal
+            $lastAntrean = Antrean::where('nomor_antrean', 'like', $tanggal . '%')
+                ->orderBy('nomor_antrean', 'desc')
+                ->first();
 
-            $urutan = 1;
-            foreach ($pemesanansTanggalIni as $p) {
-                if ($p->antrean) continue;
-                if ($p->id === $pemesanan->id) break;
-                $urutan++;
-            }
+            $nextNumber = $lastAntrean ? ((int) substr($lastAntrean->nomor_antrean, -3) + 1) : 1;
+            $nomorAntrean = $tanggal . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
 
-            $nomorAntrean = $tanggal . str_pad($urutan, 3, '0', STR_PAD_LEFT);
+            [$waktuMulai, $waktuSelesai] = $this->getWaktuMulaiOtomatis($pemesanan);
 
             Antrean::create([
                 'pemesanan_id' => $pemesanan->id,
                 'nomor_antrean' => $nomorAntrean,
                 'status' => 'menunggu',
+                'waktu_mulai' => $waktuMulai,
+                'waktu_selesai' => $waktuSelesai,
             ]);
         });
 
         return redirect()->route('admin.pemesanan.index')->with('success', 'Pemesanan berhasil ditambahkan.');
+    }
+
+    private function getWaktuMulaiOtomatis(Pemesanan $pemesanan)
+    {
+        $tanggal = Carbon::parse($pemesanan->tanggal_berangkat)->format('Y-m-d');
+        $jam = $pemesanan->jam_berangkat ?? '00:00';
+        $waktuMulai = Carbon::parse("{$tanggal} {$jam}", 'Asia/Jakarta');
+
+        $durasi = (int) ($pemesanan->paketWisata->durasi ?? 60);
+        $waktuSelesai = (clone $waktuMulai)->addMinutes($durasi);
+
+        $totalJip = Jip::count();
+        $maxIterasi = 60;
+        $iterasi = 0;
+
+        while ($iterasi < $maxIterasi) {
+            $iterasi++;
+
+            // Hitung total jip yang sedang aktif pada waktu yang sama
+            $jipTerpakai = Antrean::whereHas('pemesanan', function ($q) use ($tanggal) {
+                $q->whereDate('tanggal_berangkat', $tanggal);
+            })
+                ->where(function ($q) use ($waktuMulai, $waktuSelesai) {
+                    $q->whereBetween('waktu_mulai', [$waktuMulai, $waktuSelesai])
+                        ->orWhereBetween('waktu_selesai', [$waktuMulai, $waktuSelesai])
+                        ->orWhere(function ($query) use ($waktuMulai, $waktuSelesai) {
+                            $query->where('waktu_mulai', '<', $waktuMulai)
+                                ->where('waktu_selesai', '>', $waktuSelesai);
+                        });
+                })
+                ->with('pemesanan')
+                ->get()
+                ->sum(fn($a) => $a->pemesanan->jumlah_jip);
+
+            // Jika jip masih cukup → waktu ini dipakai
+            if (($jipTerpakai + $pemesanan->jumlah_jip) <= $totalJip) {
+                return [$waktuMulai, $waktuSelesai];
+            }
+
+            $antreanTerakhir = Antrean::whereHas('pemesanan', function ($q) use ($tanggal) {
+                $q->whereDate('tanggal_berangkat', $tanggal);
+            })
+                ->orderBy('waktu_selesai', 'asc')
+                ->first();
+
+            if ($antreanTerakhir) {
+                $waktuMulai = Carbon::parse($antreanTerakhir->waktu_selesai)->addMinute();
+                $waktuSelesai = (clone $waktuMulai)->addMinutes($durasi);
+            } else {
+                break;
+            }
+        }
+
+        return [$waktuMulai, $waktuSelesai];
     }
 }
