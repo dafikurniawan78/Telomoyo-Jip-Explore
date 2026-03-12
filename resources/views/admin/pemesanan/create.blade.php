@@ -146,6 +146,21 @@
                     <small id="infoTotal" class="text-muted"></small>
                 </div>
 
+                {{-- Status Pembayaran --}}
+                <div class="mb-3">
+                    <label for="payment_status" class="form-label fw-semibold">Status Pembayaran</label>
+                    <select name="payment_status" id="payment_status"
+                        class="form-select @error('payment_status') is-invalid @enderror" required>
+                        <option value="">-- Pilih Status Pembayaran --</option>
+                        <option value="Unpaid" {{ old('payment_status') == 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
+                        <option value="DP" {{ old('payment_status') == 'DP' ? 'selected' : '' }}>DP</option>
+                        <option value="Cash" {{ old('payment_status') == 'Cash' ? 'selected' : '' }}>Cash</option>
+                    </select>
+                    @error('payment_status')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 {{-- Bukti Pembayaran --}}
                 <div class="mb-3">
                     <label for="bukti_pembayaran" class="form-label fw-semibold">Bukti Pembayaran (Opsional)</label>

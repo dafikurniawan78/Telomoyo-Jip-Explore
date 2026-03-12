@@ -96,6 +96,28 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Status Pembayaran</th>
+                    <td>
+                        @if ($pemesanan->payment_status == 'Belum Ada')
+                            <span class="status-badge bg-secondary text-white">
+                                <i class="fas fa-money-bill-wave"></i> Belum Ada
+                            </span>
+                        @elseif ($pemesanan->payment_status == 'Unpaid')
+                            <span class="status-badge bg-warning text-dark">
+                                <i class="fas fa-exclamation-circle"></i> Unpaid
+                            </span>
+                        @elseif ($pemesanan->payment_status == 'DP')
+                            <span class="status-badge bg-info text-white">
+                                <i class="fas fa-hand-holding-usd"></i> DP
+                            </span>
+                        @elseif ($pemesanan->payment_status == 'Cash')
+                            <span class="status-badge bg-success text-white">
+                                <i class="fas fa-check-circle"></i> Lunas
+                            </span>
+                        @endif
+                    </td>
+                </tr>
+                <tr>
                     <th>Status</th>
                     <td>
                         @if ($pemesanan->status == 'pending')

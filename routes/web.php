@@ -10,6 +10,7 @@ use App\Http\Controllers\PaketWisataController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\LokasiJemputController;
 use App\Http\Controllers\JipController;
+use App\Http\Controllers\AnalisisFCFSController;
 use App\Services\FCFSService;
 
 // Route::get('/', function () {
@@ -28,6 +29,9 @@ Route::get('/pemesanan/create/{id}', [PemesananController::class, 'create'])->na
 Route::post('/pemesanan', [PemesananController::class, 'store'])->name('pemesanan.store');
 Route::get('/pemesanan/show/{id}', [PemesananController::class, 'show'])->name('pemesanan.show');
 Route::get('/pemesanan/{id}/cetak', [PemesananController::class, 'cetak'])->name('pemesanan.cetak');
+
+Route::get('/cek-antrean', [AntreanController::class, 'formCek'])->name('cek.antrean.form');
+Route::post('/cek-antrean', [AntreanController::class, 'cekStatus'])->name('cek.antrean.proses');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -52,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/pemesanan/store', [PemesananController::class, 'storeAdmin'])->name('admin.pemesanan.store');
     Route::get('/admin/pemesanan/{id}', [PemesananController::class, 'detail'])->name('admin.pemesanan.detail');
     Route::put('/admin/pemesanan/{pemesanan}/status', [PemesananController::class, 'updateStatus'])->name('admin.pemesanan.updateStatus');
+    Route::put('/admin/pemesanan/{id}/update-payment', [PemesananController::class, 'updatePayment'])->name('admin.pemesanan.updatePayment');
     Route::delete('/admin/pemesanan/{id}', [PemesananController::class, 'destroy'])->name('admin.pemesanan.destroy');
 
     Route::get('/admin/antrean', [AntreanController::class, 'index'])->name('admin.antrean.index');
@@ -83,4 +88,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/jip/{id}/edit', [JipController::class, 'edit'])->name('admin.jip.edit');
     Route::put('/admin/jip/{id}', [JipController::class, 'update'])->name('admin.jip.update');
     Route::delete('/admin/jip/{id}', [JipController::class, 'destroy'])->name('admin.jip.destroy');
+
+    Route::get('/admin/analisis-fcfs', [AnalisisFCFSController::class, 'index'])->name('admin.analisis-fcfs.index');
 });

@@ -94,4 +94,58 @@ class AntreanController extends Controller
             ->route('admin.antrean.index')
             ->with('success', 'Status antrean berhasil diperbarui.');
     }
+
+    public function formCek()
+    {
+        return view('pages.cek-antrean');
+    }
+
+    public function cekStatus(Request $request)
+    {
+        $request->validate([
+            'nomor_antrean' => 'required'
+        ]);
+
+        $antrean = Antrean::with('pemesanan')
+            ->where('nomor_antrean', $request->nomor_antrean)
+            ->first();
+
+        if (!$antrean) {
+            return back()->with('error', 'Nomor antrean tidak ditemukan');
+        }
+
+        if ($antrean->waktu_mulai) {
+
+            $estimasiMulai = $antrean->waktu_mulai;
+            $estimasiSelesai = $antrean->waktu_selesai;
+
+            $sisaWaktu = max(0, (int) now()->diffInMinutes($estimasiMulai, false));
+        } else {
+
+            $jumlahSebelum = Antrean::whereHas('pemesanan', function ($q) use ($antrean) {
+                $q->whereDate(
+                    'tanggal_berangkat',
+                    $antrean->pemesanan->tanggal_berangkat
+                );
+            })
+                ->where('status', 'menunggu')
+                ->where('nomor_antrean', '<', $antrean->nomor_antrean)
+                ->count();
+
+            $durasi = 15;
+
+            $estimasiMulai = now()->addMinutes($jumlahSebelum * $durasi);
+            $estimasiSelesai = $estimasiMulai->copy()->addMinutes($durasi);
+
+            $sisaWaktu = max(0, (int) now()->diffInMinutes($estimasiMulai, false));
+        }
+
+
+        return view('pages.cek-antrean', compact(
+            'antrean',
+            'estimasiMulai',
+            'estimasiSelesai',
+            'sisaWaktu'
+        ));
+    }
 }

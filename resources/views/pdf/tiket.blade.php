@@ -11,6 +11,12 @@
         background: #f0f2f5;
     }
 
+    .nomor-antrean {
+        font-size: 11pt;
+        font-weight: bold;
+        color: #dc3545;
+    }
+
     .ticket {
         position: relative;
         width: 500pt;
@@ -115,6 +121,7 @@
                 <div class="ticket-details">
                     <table>
                         <tr><th>Nama</th><td>{{ $pemesanan->nama }}</td></tr>
+                        <tr><th>Nomor Antrean</th><td class="nomor-antrean">{{ $pemesanan->antrean->nomor_antrean ?? '-' }}</td></tr>
                         <tr><th>Tanggal</th><td>{{ \Carbon\Carbon::parse($pemesanan->tanggal_berangkat)->format('d-m-Y') }}</td></tr>
                         <tr><th>Paket</th><td>{{ $pemesanan->paketWisata->nama_paket }}</td></tr>
                         <tr><th>Jumlah Orang</th><td>{{ $pemesanan->jumlah_orang }} Orang</td></tr>

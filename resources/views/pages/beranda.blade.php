@@ -79,7 +79,7 @@
                     {{-- Footer --}}
                     <div class="modal-footer bg-light border-0 rounded-bottom-4 justify-content-between px-4 py-3">
                         <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Tutup</button>
-                        <a href="#" class="btn btn-danger rounded-pill px-4">
+                        <a href="{{ route('pemesanan.create', $paket->id) }}" class="btn btn-danger rounded-pill px-4">
                             <i class="bi bi-cart-plus me-1"></i> Pesan Sekarang
                         </a>
                     </div>

@@ -1,0 +1,93 @@
+/* Background halaman */
+body {
+    background: linear-gradient(to bottom right, #f4f6f9, #e9edf3);
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Judul halaman */
+h2 {
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* Card utama */
+.card-status {
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease-in-out;
+    max-width: 800px;
+    margin: auto;
+}
+
+.card-status:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Label */
+.form-label {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Input */
+.form-control {
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.2);
+}
+
+/* Tombol utama */
+.btn-status {
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 28px;
+    background: linear-gradient(to right, #0d6efd, #0056d2);
+    color: #fff;
+    border: none;
+    transition: all 0.25s ease-in-out;
+}
+
+.btn-status:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to right, #0056d2, #003f9e);
+}
+
+/* Section hasil */
+.result-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+/* Animasi muncul */
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+    .card-status {
+        padding: 10px;
+    }
+}

@@ -24,11 +24,13 @@ class Pemesanan extends Model
         'status',
         'bukti_pembayaran',
         'approved_by',
+        'payment_status',
     ];
 
     protected $casts = [
         'tanggal_berangkat' => 'date',
         'jam_berangkat' => 'string',
+        'payment_status' => 'string',
     ];
 
     /**

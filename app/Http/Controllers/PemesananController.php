@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AlokasiJip;
 use App\Models\Antrean;
 use App\Models\LokasiJemput;
 use App\Models\PaketWisata;
@@ -42,8 +41,12 @@ class PemesananController extends Controller
     public function updateStatus(Request $request, Pemesanan $pemesanan)
     {
         $request->validate([
-            'status' => 'required|in:pending,disetujui,ditolak'
+            'status' => 'required|in:pending,disetujui,ditolak',
         ]);
+
+        if ($request->status === 'disetujui' && $pemesanan->payment_status === 'Belum Ada') {
+            return redirect()->back()->with('error', 'Pilih status pembayaran terlebih dahulu sebelum menyetujui pemesanan.');
+        }
 
         DB::transaction(function () use ($request, $pemesanan) {
 
@@ -131,6 +134,7 @@ class PemesananController extends Controller
                     'jam_berangkat' => $request->jam_berangkat,
                     'total' => $total,
                     'status' => 'pending',
+                    'payment_status' => 'Belum Ada',
                     'bukti_pembayaran' => $request->file('bukti_pembayaran')->store('bukti', 'public'),
                 ]);
 
@@ -170,11 +174,11 @@ class PemesananController extends Controller
 
     public function cetak($id)
     {
-        $pemesanan = Pemesanan::with(['paketWisata', 'lokasiJemput'])->findOrFail($id);
+        $pemesanan = Pemesanan::with(['paketWisata', 'lokasiJemput', 'antrean'])->findOrFail($id);
 
         // Custom size tiket: 20cm x 7cm (portrait)
         $width = 20 * 28.35; // 567 pt
-        $height = 7 * 28.35; // 198 pt
+        $height = 7 * 29.65; // 198 pt
         $customPaper = [0, 0, $width, $height];
 
         $pdf = Pdf::loadView('pdf.tiket', compact('pemesanan'))
@@ -202,6 +206,7 @@ class PemesananController extends Controller
             'paket_id' => 'required|exists:paket_wisatas,id',
             'jam_berangkat' => 'required|date_format:H:i',
             'total' => 'required|numeric',
+            'payment_status' => 'required|in:Belum Ada,Unpaid,DP,Cash',
             'bukti_pembayaran' => 'nullable|image|max:2048',
         ]);
 
@@ -209,6 +214,7 @@ class PemesananController extends Controller
         $data['telepon'] = $request->telepon ?? '-';
         $data['jumlah_jip'] = ceil($request->jumlah_orang / 4);
         $data['status'] = 'disetujui';
+        $data['payment_status'] = $request->payment_status ?? 'Belum Ada';
         $data['approved_by'] = Auth::id();
 
         if ($request->hasFile('bukti_pembayaran')) {
@@ -241,6 +247,19 @@ class PemesananController extends Controller
         });
 
         return redirect()->route('admin.pemesanan.index')->with('success', 'Pemesanan berhasil ditambahkan.');
+    }
+
+    public function updatePayment(Request $request, $id)
+    {
+        $pemesanan = Pemesanan::findOrFail($id);
+        $request->validate([
+            'payment_status' => 'required|in:Belum Ada,Unpaid,DP,Cash',
+        ]);
+
+        $pemesanan->payment_status = $request->payment_status;
+        $pemesanan->save();
+
+        return redirect()->back()->with('success', 'Status pembayaran berhasil diubah.');
     }
 
     private function getWaktuMulaiOtomatis(Pemesanan $pemesanan)

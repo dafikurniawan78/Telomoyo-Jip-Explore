@@ -71,6 +71,16 @@
                         <p>Data Jip</p>
                     </a>
                 </li>
+
+                {{-- <li class="nav-header">Analisis</li> --}}
+                {{-- Analisis FCFS --}}
+                {{-- <li class="nav-item">
+                    <a href="{{ route('admin.analisis-fcfs.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.analisis-fcfs.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-project-diagram"></i>
+                        <p>Analisis FCFS</p>
+                    </a>
+                </li> --}}
             </ul>
         </nav>
     </div>

@@ -19,10 +19,11 @@
             <button class="close-sidebar d-lg-none" aria-label="Tutup">&times;</button>
 
             <ul class="navbar-nav ms-auto align-items-center gap-2">
-                <li class="nav-item"><a class="nav-link nav-item-style" href="/">Beranda</a></li>
-                <li class="nav-item"><a class="nav-link nav-item-style" href="/paket">Paket Wisata</a></li>
-                <li class="nav-item"><a class="nav-link nav-item-style" href="#tentang">Tentang Kami</a></li>
-                <li class="nav-item"><a class="nav-link nav-item-style" href="/kontak">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link nav-item-style" href="/">BERANDA</a></li>
+                <li class="nav-item"><a class="nav-link nav-item-style" href="/paket">PAKET WISATA</a></li>
+                <li class="nav-item"><a class="nav-link nav-item-style" href="/cek-antrean">STATUS LAYANAN</a></li>
+                <li class="nav-item"><a class="nav-link nav-item-style" href="#tentang">TENTANG KAMI</a></li>
+                <li class="nav-item"><a class="nav-link nav-item-style" href="/kontak">KONTAK</a></li>
             </ul>
         </div>
     </div>

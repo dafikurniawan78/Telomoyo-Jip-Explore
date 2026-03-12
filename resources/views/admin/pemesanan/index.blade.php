@@ -59,6 +59,7 @@
                             <th>Tanggal</th>
                             <th>Jumlah Orang</th>
                             <th>Total</th>
+                            <th>Payment</th>
                             <th>Status</th>
                             <th>Bukti</th>
                             <th>Diproses Oleh</th>
@@ -76,6 +77,22 @@
                                 <td>{{ \Carbon\Carbon::parse($pemesanan->tanggal_berangkat)->format('d-m-Y') }}</td>
                                 <td>{{ $pemesanan->jumlah_orang }} org</td>
                                 <td>Rp {{ number_format($pemesanan->total, 0, ',', '.') }}</td>
+                                <td>
+                                    @if ($pemesanan->status != 'ditolak')
+                                        <form action="{{ route('admin.pemesanan.updatePayment', $pemesanan->id) }}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <select name="payment_status" class="form-select form-select-sm" style="width: 100px;" data-current="{{ $pemesanan->payment_status }}">
+                                                <option value="Belum Ada" {{ $pemesanan->payment_status == 'Belum Ada' ? 'selected' : '' }}>Belum Ada</option>
+                                                <option value="Unpaid" {{ $pemesanan->payment_status == 'Unpaid' ? 'selected' : '' }}>Unpaid</option>
+                                                <option value="DP" {{ $pemesanan->payment_status == 'DP' ? 'selected' : '' }}>DP</option>
+                                                <option value="Cash" {{ $pemesanan->payment_status == 'Cash' ? 'selected' : '' }}>Cash</option>
+                                            </select>
+                                        </form>
+                                    @else
+                                        <span class="badge bg-secondary">{{ $pemesanan->payment_status }}</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($pemesanan->status == 'pending')
                                         <span class="badge bg-warning text-dark">Menunggu</span>
@@ -117,7 +134,7 @@
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status" value="disetujui">
-                                            <button class="btn btn-sm btn-success">
+                                            <button class="btn btn-sm btn-success" {{ $pemesanan->payment_status == 'Belum Ada' ? 'disabled' : '' }}>
                                                 <i class="fas fa-check"></i> Setujui
                                             </button>
                                         </form>
@@ -176,6 +193,17 @@
         }
 
         window.location.href = url.toString();
+    });
+
+    document.querySelectorAll('select[name="payment_status"]').forEach(function(select) {
+        select.addEventListener('change', function(e) {
+            if(confirm('Yakin ingin mengubah status pembayaran?')) {
+                e.target.form.submit(); // langsung submit form
+            } else {
+                // kalau batal, kembalikan nilai sebelumnya
+                e.target.value = e.target.getAttribute('data-current');
+            }
+        });
     });
 </script>
 @endpush

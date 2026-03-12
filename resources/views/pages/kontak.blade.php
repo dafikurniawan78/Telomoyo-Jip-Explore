@@ -49,16 +49,13 @@
 
                     <div class="map-responsive">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.1234567890!2d110.215678!3d-7.502345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a1234567890%3A0xabcdef1234567890!2sTelomoyo%20Jip%20Explore!5e0!3m2!1sid!2sid!4v1696181234567!5m2!1sid!2sid"
-                            width="100%"
-                            height="350"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.8056313338334!2d110.4035521!3d-7.3756692!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a7f2b17d0e255%3A0xf0a393b4e3ce0c!2sTelomoyo%20Jip%20Explore!5e0!3m2!1sid!2sid!4v1771402420593!5m2!1sid!2sid"
                             style="border:0;"
                             allowfullscreen=""
                             loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -81,8 +81,9 @@
                             <input type="file" class="form-control rounded-3" name="bukti_pembayaran" accept="image/*" required>
                             <small class="text-muted d-block mt-2">
                                 Silakan lakukan pembayaran via transfer ke nomor rekening:<br>
-                                <strong>a/n Telomoyo Jip Explore</strong><br>
-                                <strong> - </strong><br>
+                                <strong>a/n Mul Budi Santoso</strong><br>
+                                <strong> Mandiri - 185 000 909 9000 </strong><br>
+                                <strong> BCA - 1220 971 151 </strong><br>
                                 lalu upload bukti transfer di sini.
                             </small>
                         </div>

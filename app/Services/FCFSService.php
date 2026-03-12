@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Antrean;
 use App\Models\Jip;
 use App\Models\AlokasiJip;
+use App\Models\Pemesanan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -41,11 +42,33 @@ class FCFSService
 
                 // Ambil antrean menunggu paling awal untuk hari ini
                 $antrean = Antrean::join('pemesanans', 'antreans.pemesanan_id', '=', 'pemesanans.id')
+                    ->join('paket_wisatas', 'pemesanans.paket_id', '=', 'paket_wisatas.id')
                     ->where('antreans.status', 'menunggu')
-                    ->whereDate('pemesanans.tanggal_berangkat', $today)
                     ->where('pemesanans.status', 'disetujui')
-                    ->whereBetween('pemesanans.jam_berangkat', $rangeJam)
-                    ->orderBy('pemesanans.created_at', 'asc')
+                    ->whereDate('pemesanans.tanggal_berangkat', $today)
+                    ->orderByRaw("
+                        CASE
+                            WHEN pemesanans.jam_berangkat BETWEEN '04:00:00' AND '05:00:00' THEN 0
+                            ELSE 1
+                        END
+                    ") // Golden Hour
+                    ->orderBy('pemesanans.jam_berangkat', 'asc') // Jam Berangkat Ascending
+                    ->orderBy('pemesanans.created_at', 'asc') // FCFS murni
+                    ->orderByRaw("
+                        CASE
+                            WHEN paket_wisatas.nama_paket = 'Paket Sunrise' THEN 1
+                            WHEN paket_wisatas.nama_paket = 'Paket Sunset' THEN 3
+                            ELSE 2
+                        END
+                    ") // Bobot Paket
+                    ->orderByRaw("
+                        CASE
+                            WHEN pemesanans.payment_status = 'Cash' THEN 1
+                            WHEN pemesanans.payment_status = 'DP' THEN 2
+                            WHEN pemesanans.payment_status = 'Unpaid' THEN 3
+                            ELSE 4
+                        END
+                    ") // Payment
                     ->select('antreans.*')
                     ->first();
 
@@ -135,7 +158,7 @@ class FCFSService
                         continue;
                     }
 
-                    // Simpan alokasi dan ubah status jip secara atomic
+                    // Simpan alokasi dan ubah status jip secara otomatis
                     foreach ($jipsTersedia as $jip) {
                         AlokasiJip::create([
                             'antrean_id' => $antrean->id,
